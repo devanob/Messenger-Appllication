@@ -48,7 +48,7 @@ export default class UserModel {
         return `UUID: ${this.uuid} 
                 USERNAME: ${this.username} 
                 USER IMAGE:${this.user_image} 
-                Active:${this.areActiveContact ? "is Active" : "Not Active"}`
+                Active:${this.areActiveContact ? "Active" : "Inactive"}`
         
     }
 }

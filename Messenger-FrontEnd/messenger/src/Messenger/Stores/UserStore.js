@@ -34,7 +34,6 @@ export default class UserStore {
         this.loadPendingContacts();
     }
     async asyncLoadData(){
-        console.log("Async load Data");
         await this.loadContacts();
         await this.loadPendingContacts();
     }
@@ -57,7 +56,7 @@ export default class UserStore {
 
     setUser(user, isActive=true){
         if (isActive == true){
-            foundUser = this.activeContacts.find((element)=>{
+            let foundUser = this.activeContacts.find((element)=>{
                 element.uuid = user.uuid;
             })
             if (foundUser != null){
@@ -69,14 +68,14 @@ export default class UserStore {
             
         }
         else {
-            foundUser = this.activeContacts.find((element)=>{
+            let foundUser = this.pendingContacts.find((element)=>{
                 element.uuid = user.uuid;
             })
             if (foundUser != null){
                 foundUser.upDate(user);
             }
             else {
-                this.activeContacts.push(new UserModel(this,user,false));
+                this.pendingContacts.push(new UserModel(this,user,false));
             }
         }
     }
@@ -84,6 +83,7 @@ export default class UserStore {
     loadContacts(){
         this.setLoadingActive(true);
         return this.transporLayer.getContacts().then(usersContactList=>{
+                //console.log(usersContactList);
                 if (usersContactList.length == 0){
                     this.setLoadingActive(false);
                     return;
@@ -92,9 +92,10 @@ export default class UserStore {
                     this.setUser(user,true);
                 });
                 this.setLoadingActive(false);
+                return;
             }
         ).catch(error=>{
-            //console.log(error.response);
+            console.log(error);
             this.loadingActiveError = true;
         })
     }
@@ -108,10 +109,13 @@ export default class UserStore {
                 usersContactPendingList.forEach(user => {
                     this.setUser(user,false);
                 });
+                this.setLoadingPending(false);
+                return;
             }
+            
         ).catch(error=>{
-            //console.log(error);
-            this.loadingPendingError = false;
+            console.log(error);
+            this.loadingPendingError = true;
         })
 
     }

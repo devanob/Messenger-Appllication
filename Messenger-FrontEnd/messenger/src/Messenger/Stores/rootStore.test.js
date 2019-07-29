@@ -13,7 +13,7 @@ it("Testing RootwStore-", async () => {
                     password:"11kingie"}
                     )
     await rootStore.startAsyncServices().then(()=>{
-            console.log(this.userStore.asJson());
+            console.log(rootStore.userStore.asJson());
         });
 
     
