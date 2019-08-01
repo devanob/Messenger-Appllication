@@ -5,7 +5,7 @@ import SideBar from "./Messenger/Componets/SideBar"
 function App() {
   return (
     <div className="container">
-      <SideBar>Side-Bar-</SideBar>
+      <SideBar>-Side-Bar-</SideBar>
       <div class="content"> 
         Content
       </div>
