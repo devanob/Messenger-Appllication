@@ -12,15 +12,6 @@ export default class RootStore {
     constructor(store=null, userNamePassword=null){
         this.transportLayer = new MessengerService();
         this.userStore = new UserStore(this,this.transportLayer);
-        
-    
-        
-     
-        //Now To Intial Our Stores
-        //UserStore
-        //this.userStore = new UserStore(this,this.transportLayer);
-
-
     }
     //Start Async Services That are need as soon a 
     async startAsyncServices(){

@@ -1,13 +1,11 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-
+import SideBar from "./Messenger/Componets/SideBar"
 function App() {
   return (
     <div className="container">
-      <div class="sidebar"> 
-        SideBar
-      </div>
+      <SideBar>Side-Bar-</SideBar>
       <div class="content"> 
         Content
       </div>
