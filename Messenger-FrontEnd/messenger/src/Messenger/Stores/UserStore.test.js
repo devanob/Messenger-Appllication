@@ -45,9 +45,9 @@ it("Testing Active User UserStore", async () => {
       console.log(item.toString());
     })
   })
-  userStore.setActiveContact("Devano");
-  userStore.setActiveContact("KyleLink");
-  userStore.setActiveContact("MissMeme");
+  userStore.setActiveContact({username:"Devano"});
+  userStore.setActiveContact({username:"KyleLink"});
+  userStore.setActiveContact({username:"MissMeme"});
   
 
 });

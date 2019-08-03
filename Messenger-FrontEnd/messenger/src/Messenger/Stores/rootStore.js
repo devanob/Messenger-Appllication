@@ -1,7 +1,8 @@
 
-import { observable,observer, computed, action, decorate,useStrict, configure, isObservableArray} from "mobx";
+import {configure} from "mobx";
 import  MessengerService  from "../Sevices/MessengerService"
 import UserStore from "./UserStore"
+import UIUserStore from "./UIUsersStore"
 configure({ enforceActions: 'observed' })
 /**
  * Root Store 
@@ -9,9 +10,14 @@ configure({ enforceActions: 'observed' })
 export default class RootStore {
     transportLayer = null;
     userStore = null;
+    uiSideBarStore = null;
     constructor(store=null, userNamePassword=null){
         this.transportLayer = new MessengerService();
         this.userStore = new UserStore(this,this.transportLayer);
+        this.uiUserStore = new UIUserStore(this);
+        this.startAsyncServices().then(()=>{
+            console.log("Done Loading");
+        })
     }
     //Start Async Services That are need as soon a 
     async startAsyncServices(){

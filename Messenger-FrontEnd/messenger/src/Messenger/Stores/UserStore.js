@@ -1,5 +1,5 @@
 import UserModel from "../Models/UserModel"
-import { observable,observer, computed, action, decorate,useStrict, configure, isObservableArray} from "mobx";
+import { observable, computed, action, decorate, configure} from "mobx";
 
 configure({ enforceActions: 'observed' })
 //IMPORTS
@@ -9,8 +9,7 @@ export default class UserStore {
      *
      * @param {*} storeOwner-Store Owner-Owned By This Store Instance
      */
-    
-    currentActiveUser= null;// {usename:null, uuid:null};
+    @observable currentActiveUser=  null;// {usename:null, uuid:null};
     activeContacts = []
     pendingContacts = []
     isLoadingActiveContactsFlag= true//observable.box(true);
@@ -21,11 +20,8 @@ export default class UserStore {
     constructor(store=null,transporLayer=null){
         this.store = store;
         this.transporLayer = transporLayer;
-        console.log(this.transporLayer);
-        //this.loadContacts();
-
-       
-        
+        this.transporLayer
+        //this.loadContacts();ls   
     }
     //Load contacts active and pending from the server using the transport layer
     loadData(){
@@ -55,9 +51,9 @@ export default class UserStore {
     }
 
     setUser(user, isActive=true){
-        if (isActive == true){
+        if (isActive === true){
             let foundUser = this.activeContacts.find((element)=>{
-                element.uuid = user.uuid;
+                return element.uuid === user.uuid;
             })
             if (foundUser != null){
                 foundUser.upDate(user);
@@ -69,7 +65,7 @@ export default class UserStore {
         }
         else {
             let foundUser = this.pendingContacts.find((element)=>{
-                element.uuid = user.uuid;
+                return element.uuid === user.uuid;
             })
             if (foundUser != null){
                 foundUser.upDate(user);
@@ -82,9 +78,10 @@ export default class UserStore {
 
     loadContacts(){
         this.setLoadingActive(true);
+        
         return this.transporLayer.getContacts().then(usersContactList=>{
                 //console.log(usersContactList);
-                if (usersContactList.length == 0){
+                if (usersContactList.length === 0){
                     this.setLoadingActive(false);
                     return;
                 }
@@ -102,7 +99,7 @@ export default class UserStore {
     loadPendingContacts(){
         this.setLoadingPending(true);
         return this.transporLayer.getPendingContacts().then(usersContactPendingList=>{
-                if (usersContactPendingList.length == 0){
+                if (usersContactPendingList.length === 0){
                     this.setLoadingPending(false);
                     return;
                 }
@@ -120,38 +117,49 @@ export default class UserStore {
 
     }
     setActiveContact(idUsername){
-        if (this.activeContacts.length == 0){
+        //console.log("Here");
+        //console.log("Active Contact");
+        //console.log(idUsername);
+        if (this.activeContacts.length === 0 || idUsername === null){
             return false; 
         }
         else {
+            //console.log(idUsername);
             let user = this.activeContacts.find((user)=>{
-                return user.uuid == idUsername || user.username == idUsername;
+                return user.uuid === idUsername.uuid || user.username === idUsername.username;
             });
-            if (user == null){
+            //console.log("Found User" + user);
+            //console.log(user.asJson());
+            if (user === null){
                 return false;
             }
             else {
+                //console.log("Came here somehow");
                 this.currentActiveUser = user;
+                this.generateActiveUserList()
                 return true;
             }
         }
     }
     get listActiveContacts(){
-        if (this.currentActiveUser == null || this.activeContacts.length == 0){
+        if (this.currentActiveUser === null || this.activeContacts.length === 0){
+            //console.log("NO Active user");
             return this.activeContacts;
         }   
         else{
-            let activeUser = this.currentActiveUser;
-            console.log("Running");
-            //  this.activeContacts.sort((a,b)=>{
-            //     b == activeUser;
-            // });
-            return this.activeContacts.sort((a,b)=>{
-                return b.uuid == activeUser.uuid;
-            });
+            console.log("we have Active user");
+            return this.activeContacts;
             
             
         }
+    }
+    
+    generateActiveUserList() {
+       let newUsersActives = this.activeContacts.filter(item=>{
+           return item.uuid !== this.currentActiveUser.uuid;
+       });
+       newUsersActives.unshift(this.currentActiveUser);
+       this.activeContacts = newUsersActives;
     }
 
 
@@ -186,7 +194,6 @@ decorate(UserStore , {
     loadContacts:action,
     setLoadingActive : action,
     setLoadingPending : action,
-    currentActiveUser : observable,
     listActiveContacts : computed,
     setActiveContact : action,
     loadingActiveError: observable,

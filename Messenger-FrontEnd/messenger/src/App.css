@@ -7,18 +7,6 @@
   align-self: center;
 }
 
-.sidebar{
-  background-color: green;
-  transition: width 1s;
-  width: 0%;
-  height: 100%;
-  
-
-}
-
-.sidebar.active{
-  width:25vw;
-}
 
 .content {
   background-color: grey;

@@ -24,6 +24,15 @@ export default class UserModel {
             this.areActiveContact =  false;
         }
     }
+    setUserActive() {
+        if (this.store){
+            this.store.setActiveContact(this);
+            //console.log("Done Setting User Active");
+        }
+        else {
+            //console.log("No Store Attached To This Model");
+        }
+    }
     //Update The Current User Based On Pass Json Object
     upDate(jsonData){
         this.username = this.username;
