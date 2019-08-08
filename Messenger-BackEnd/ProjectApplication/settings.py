@@ -44,8 +44,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'channels',
 ]
-
+ASGI_APPLICATION = "ProjectApplication.routing.application"
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -57,6 +58,16 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  
     'django.middleware.common.CommonMiddleware',
 ]
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_rabbitmq.core.RabbitmqChannelLayer",
+        "CONFIG": {
+            "host": "amqp://guest:guest@127.0.0.1/",
+            # "ssl_context": ... (optional)
+        },
+    },
+}
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True

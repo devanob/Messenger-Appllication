@@ -49,7 +49,7 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 100
 
 class UserInfoViewSet(viewsets.ViewSet,StandardResultsSetPagination):
-    "Viwset For Modifying, Friends, Pending Friends, "
+    "Viwset For Modifying, Friends, Pending Friends "
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     USER_MODEL = get_user_model()
     permission_classes = [IsAuthenticated]
