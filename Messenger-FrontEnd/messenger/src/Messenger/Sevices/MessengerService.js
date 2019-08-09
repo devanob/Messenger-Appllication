@@ -6,24 +6,29 @@ export default class MessengerService {
     //LogIn Token Key 
     tokenHeaderReady = null;
     reconnectingWebSocket = null;
+    authToken = null;
     constructor(){
         this.headersList = {
         headers:{"Content-Type": 'application/json'},
         };
         //if the usernmae and password is supplied then get the token from the server
        
-        this.setUpWebSocket();
+        
     }
     
 
     setUpWebSocket(){
-        let url = "ws://127.0.0.1:8000/ws/messenger/";
+        
+        let url = `ws://127.0.0.1:8000/ws/messenger/?token=${this.authToken}`;
         this.reconnectingWebSocket = new ReconnectingWebSocket(url);
         this.reconnectingWebSocket.addEventListener('open', () => {
-            this.reconnectingWebSocket.send(
-                    JSON.stringify({'type': 'message', 'message': "HELLO"})
-                );
+          console.log("Connected To WebSocket");
         });
+
+        this.reconnectingWebSocket.addEventListener('error', (error) => {
+            console.log(error);
+          });
+          
         
     }
     static async createWithLoginToken(usernamePassWord=null){
@@ -73,9 +78,11 @@ export default class MessengerService {
             let userLoginInfo = response.data;
             this.headersList.headers["Authorization"] = `Token ${userLoginInfo.token}`;
             this.tokenHeaderReady = true;
+            this.authToken = userLoginInfo.token;
             if (callBack != null){
                 callBack();
             }
+            this.setUpWebSocket();
             return this.headersList.headers["Authorization"];
             
         });

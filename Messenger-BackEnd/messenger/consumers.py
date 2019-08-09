@@ -5,12 +5,17 @@ from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 class MessengerConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self):
-        print("connection")
-        await self.accept() 
+        user = self.scope["user"]
+        if user.is_authenticated and user.is_active:
+            print("User authenticated")
+            await self.accept() 
+        else:
+            print("user rejected")
+            await self.close("User Is Not Authenicated")
+        return
         
     async def disconnect(self,close_code):
-        pass
-        #print(close_code)
+        print(close_code)
     async def receive_json(self,content):
         print(content)
 
