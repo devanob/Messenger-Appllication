@@ -20,7 +20,6 @@ export default class UserStore {
     constructor(store=null,transporLayer=null){
         this.store = store;
         this.transporLayer = transporLayer;
-        this.transporLayer
         //this.loadContacts();ls   
     }
     //Load contacts active and pending from the server using the transport layer
@@ -47,7 +46,7 @@ export default class UserStore {
     }
 
     get getIsLoadingPending(){
-        return this.isLoadingPendingFlag;
+        return this.isLoadingPendingContactsFlag;
     }
 
     setUser(user, isActive=true){
@@ -142,13 +141,24 @@ export default class UserStore {
         }
     }
     get listActiveContacts(){
-        if (this.currentActiveUser === null || this.activeContacts.length === 0){
-            //console.log("NO Active user");
-            return this.activeContacts;
+        if (this.activeContacts.length === 0){
+            return false;
         }   
         else{
             console.log("we have Active user");
             return this.activeContacts;
+            
+            
+        }
+    }
+    get listPendingContacts(){
+        if (this.pendingContacts === null || this.pendingContacts.length === 0){
+            //console.log("NO Active user");
+            return false;
+        }   
+        else{
+            console.log("we have Active user");
+            return this.pendingContacts;
             
             
         }
@@ -191,11 +201,11 @@ decorate(UserStore , {
     isLoadingPendingContactsFlag: observable,
     setUser: action,
     loadContacts: action,
-    loadContacts:action,
     setLoadingActive : action,
     setLoadingPending : action,
     listActiveContacts : computed,
     setActiveContact : action,
     loadingActiveError: observable,
-    loadingPendingError: observable
+    loadingPendingError: observable,
+    listPendingContacts: computed
 })

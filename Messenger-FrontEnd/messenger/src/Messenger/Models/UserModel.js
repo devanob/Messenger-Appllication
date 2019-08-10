@@ -1,5 +1,5 @@
 //IMPORTS
-import {observer} from "mobx"
+// import {observer} from "mobx"
 //Model The Users Contacts And Potential Contacts
 export default class UserModel {
     /**

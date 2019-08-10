@@ -1,5 +1,8 @@
 import axios from "axios";
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import { observable, action, configure} from "mobx";
+
+configure({ enforceActions: 'observed' })
 
 export default class MessengerService {
 
@@ -7,27 +10,46 @@ export default class MessengerService {
     tokenHeaderReady = null;
     reconnectingWebSocket = null;
     authToken = null;
+    @observable webSocketConnected = false;
+    @observable webSocketError = false;
     constructor(){
         this.headersList = {
-        headers:{"Content-Type": 'application/json'},
+            headers:{"Content-Type": 'application/json'},
         };
         //if the usernmae and password is supplied then get the token from the server
        
         
     }
-    
 
-    setUpWebSocket(){
+    @action
+    setConnectedWebSocketFlag(value){
+        this.webSocketConnected = value;
+    }
+
+    @action
+    setErrorWebSocketFlag(value){
+        this.webSocketError = value;
+    }
+    
+    async setUpWebSocket(){
         
         let url = `ws://127.0.0.1:8000/ws/messenger/?token=${this.authToken}`;
         this.reconnectingWebSocket = new ReconnectingWebSocket(url);
         this.reconnectingWebSocket.addEventListener('open', () => {
-          console.log("Connected To WebSocket");
+            console.log("Connected To WebSocket");
+            this.setConnectedWebSocketFlag(true);
+            this.setErrorWebSocketFlag(false);
         });
 
         this.reconnectingWebSocket.addEventListener('error', (error) => {
             console.log(error);
-          });
+            this.setErrorWebSocketFlag(true);
+        });
+
+        this.reconnectingWebSocket.addEventListener('close', (mssg) => {
+            console.log("Disconnected To WebSocket");
+            this.setConnectedWebSocketFlag(false);
+        });
           
         
     }
@@ -82,7 +104,7 @@ export default class MessengerService {
             if (callBack != null){
                 callBack();
             }
-            this.setUpWebSocket();
+           // console.log("Hello");
             return this.headersList.headers["Authorization"];
             
         });

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { observer,inject } from "mobx-react"
 @observer
-class ActiveUser extends Component{
+class PendingUser extends Component{
   constructor(props){
     super(props)
     
@@ -9,7 +9,7 @@ class ActiveUser extends Component{
   setActive= ()=>{
     //console.log("componet");
     //console.log(this.props.user);
-    this.props.user.setUserActive();
+    //this.props.user.setUserActive();
   }
   render() {
     const {/*children,*/ user=null} = this.props;
@@ -33,4 +33,4 @@ class ActiveUser extends Component{
   
 }
 
-export default ActiveUser;
+export default PendingUser ;

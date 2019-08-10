@@ -3,16 +3,17 @@ import { observable, computed, action, configure} from "mobx";
 configure({ enforceActions: 'observed' })
 //IMPORTS
 //Model The Users Contacts And Potential Contacts
-const viableStates = [
-    "ACTIVEUSERCONTACT",
-    "INACTIVEUSERCONTACT",
-    "SEARCHUSER",
-]
+
 /**
  * This Class Acts As A Store For SideBar UI state 
  */
 export default class UIUserStore {
-    activeElement= "ACTIVEUSERCONTACT";
+    viableStates = [
+        "ACTIVECONTACTS",
+        "PENDNGCONTACT",
+        "SEARCHUSER",
+    ]
+    @observable activeElement= "ACTIVECONTACTS";
     @observable isActive = true;
     store = null
     /**
@@ -22,7 +23,10 @@ export default class UIUserStore {
     constructor(store=null){
         this.store = store;
     }
-
+    @computed
+    get getActiveElement(){
+        return this.activeElement;
+    }
     @computed
     get getIsActive(){
         return this.isActive;

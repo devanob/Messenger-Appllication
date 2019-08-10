@@ -23,7 +23,7 @@
 --------------------------------*/
 
 .toggler{
-    height: 10%;
+    height: 5%;
     width: 100%;
     background-color: blue;
 }
@@ -32,33 +32,99 @@
   /* Search
 --------------------------------*/
 
-.search{
+.search-users{
     height: 10%;
     width: 100%;
     background-color: purple;
 }
 
-.search form input {
-    width:100%;
+.search-users form input {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  width: 50%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  padding: 1em;
+
 }
 
-  /* Active Messages
+.search-users form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  
+}
+
+  /* Active User
 --------------------------------*/
 .activeUsers{
   height: 75%;
   width: 100;
-  background-color: palegreen;
+  /* background-color: palegreen; */
   overflow: auto;
 }
 
-.activeUsers .users li {
-  height: 25%;
-  background-color: red;
-
+.activeUsers .users > li {
+  
+ 
+  
   
 }
 .activeUsers .users li{
-    margin-top: 0.5em;
+  background-color: #f6f6f6;
+  border-color: #ddd;
+  color: #333;
+  text-shadow: 0 1px 0 #f3f3f3;
+  border-top-left-radius: 0.1em;
+  border-width: 1px 0 0;
+  border-style: solid;
+  height: 15%;
+  overflow: visible;
+  width: 100%;
+}
+
+.activeUsers .users li > a{
+  display: flex;
+  flex-direction: row;
+  background-color: #f6f6f6;
+  border-color: #ddd;
+  color: #333;
+  height: 100%;
+  text-shadow: 0 1px 0 #f3f3f3;
+  border-top-left-radius: 0.1em;
+  border-width: 3px 0 0;
+
+
+ 
+}
+
+.activeUsers .users li > a:hover{
+  background-color: #ededed;
+  border-color: #ddd;
+  color: #333;
+  text-shadow: 0 1px 0 #f3f3f3;
+}
+
+.activeUsers .users .profile-img{
+  width: 25%;
+
+}
+
+.activeUsers .users .contact-info{
+  width: 60%;
+
+}
+
+.profile-img img {
+  width: 100%;
+  height:100%;
 }
 
 .activeUsers ul {
@@ -70,6 +136,98 @@
 }
 .activeUsers ul>:first-child{
     background-color: blue;
-  }
+}
 
+  /* User State Toggler
+--------------------------------*/
+
+.users-type-toggler{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.users-type-toggler-list{
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+
+  /* Pending Users
+--------------------------------*/
+.pendingUsers{
+  height: 75%;
+  width: 100;
+  /* background-color: palegreen; */
+  overflow: auto;
+}
+
+.pendingUsers .users li{
+  background-color: #f6f6f6;
+  border-color: #ddd;
+  color: #333;
+  text-shadow: 0 1px 0 #f3f3f3;
+  border-top-left-radius: 0.1em;
+  border-width: 1px 0 0;
+  border-style: solid;
+  height: 15%;
+  overflow: visible;
+  width: 100%;
+}
+
+.pendingUsers .users li > a{
+  display: flex;
+  flex-direction: row;
+  background-color: #f6f6f6;
+  border-color: #ddd;
+  color: #333;
+  height: 100%;
+  text-shadow: 0 1px 0 #f3f3f3;
+  border-top-left-radius: 0.1em;
+  border-width: 3px 0 0;
+
+
+ 
+}
+
+.pendingUsers .users li > a:hover{
+  background-color: #ededed;
+  border-color: #ddd;
+  color: #333;
+  text-shadow: 0 1px 0 #f3f3f3;
+}
+
+.pendingUsers .users .profile-img{
+  width: 25%;
+
+}
+
+.pendingUsers .users .contact-info{
+  width: 60%;
+
+}
+
+.profile-img img {
+  width: 100%;
+  height:100%;
+}
+
+.pendingUsers ul {
+  width: 100%;
+  height: 100%;
+  list-style-type: none;
+  padding: 0%;
+  margin: 0%;
+}
+.pendingUsers ul>:first-child{
+    background-color: blue;
+}
 

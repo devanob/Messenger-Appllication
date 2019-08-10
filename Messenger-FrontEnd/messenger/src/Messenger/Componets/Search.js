@@ -1,14 +1,13 @@
 import React, {Component} from "react";
 class Search extends Component{
     constructor(props){
-      super(props)
-      // console.log(props);
-      
+      super(props);
+
     }
     render() {
       const {value=null, onChange=null, children=null} = this.props;
       return (
-        <div className="search">
+        <div className="search-users">
             <form>
                 {children}<input
                 type = "text"

@@ -17,11 +17,14 @@ export default class RootStore {
         this.uiUserStore = new UIUserStore(this);
         this.startAsyncServices().then(()=>{
             console.log("Done Loading");
+        }).catch(error=>{
+            console.log(error);
         })
     }
     //Start Async Services That are need as soon a 
     async startAsyncServices(){
         await this.transportLayer.getLoginToken("Devano", "11kingie");
+        await this.transportLayer.setUpWebSocket();
         await this.userStore.asyncLoadData();
         return true;
     }

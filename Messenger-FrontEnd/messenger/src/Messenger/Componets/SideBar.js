@@ -4,12 +4,14 @@ import "../css/SideBar.css"
 import Toggler from "./Toggler"
 import Search  from "./Search"
 import ActiveUsers from "./ActiveUsers"
+import PendingUsers from "./PendingUsers"
+import ActiveUserComponetToggler from "./ActiveUserComponetToggler"
+
 @inject("rootStore")
 @observer
 class SideBar extends Component{
   constructor(props){
-    super(props)
-    console.log(props);
+    super(props);
 
     this.state = {
         searchText: ""
@@ -27,19 +29,36 @@ class SideBar extends Component{
         }
       )
   }   
-
+  setUserUiState =(state)=>{
+    this.props.rootStore.uiUserStore.setActiveElement(state);
+  }
   render() {
-    const {children, rootStore} = this.props;
-    //console.log(rootStore.userStore.activeContacts.length);
+    const {/*children,*/ rootStore} = this.props;
+    let userStateUI = rootStore.uiUserStore.getActiveElement;
+    let toRender = null;
+    if (userStateUI ===  "ACTIVECONTACTS" ){
+      toRender = ( <ActiveUsers searchText={this.state.searchText}/>);
+    }
+    else if (userStateUI ===  "PENDNGCONTACT"){
+      toRender = ( <PendingUsers searchText={this.state.searchText}/>);
+    }
     return (
       <div className={`sidebar ${rootStore.uiUserStore.getIsActive? "active": ""}`}>
         <Toggler onClickHandlier={this.toggleActiveSideBar}/>
-        <Search value={this.state.searchText} onChange={this.setSearchText} children={null}/>
-        <ActiveUsers searchText={this.state.searchText}/>
+        <ActiveUserComponetToggler stateChangeHandler={this.setUserUiState}/>
+        {toRender}
+        
+
+
       </div>
 
     );
   }
+  viableStates = [
+    "ACTIVECONTACTS",
+    "PENDNGCONTACT",
+    "SEARCHUSER",
+]
   componentDidCatch(error, errorInfo) {
     this.setState({
       error: error,

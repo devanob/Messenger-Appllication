@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import { observer,inject } from "mobx-react"
-import ActiveUser from "./ActiveUser"
+import PendingUser from "./PendingUser"
 @inject("rootStore")
 @observer
-class ActiveUsers extends Component{
+class PendingUsers extends Component{
   constructor(props){
     super(props)
     console.log(props);
@@ -11,27 +11,27 @@ class ActiveUsers extends Component{
 
   render() {
     const {/*children,*/ rootStore,searchText} = this.props;
-    let activeUsers = rootStore.userStore.listActiveContacts;
-    let loading = rootStore.userStore.getIsLoadingActive;
+    let pendingUsers = rootStore.userStore.listPendingContacts;
+    let loading = rootStore.userStore.getIsLoadingPending;
     if (!loading){
-      if (!activeUsers){
-        return (
-          <div className="activeUsers">
-              YOu Have No Contacts
-          </div>
-         );
-      } 
+      if (!pendingUsers){
+          return (
+            <div className="pendingUsers">
+                YOu Have Pending Contact
+            </div>
+           );
+      }
       return (
-      <div className="activeUsers">
+      <div className="pendingUsers">
           
           <ul className="users">
               
-              {activeUsers.filter((item=>{
+              {pendingUsers.filter((item=>{
                 return item.username.toLowerCase().includes(searchText.toLowerCase());
               })).map(user=>{
                 
                   return (
-                      <ActiveUser  key={user.uuid} user={user}/>
+                      <PendingUser  key={user.uuid} user={user}/>
                   )
               })}
           </ul>
@@ -40,7 +40,7 @@ class ActiveUsers extends Component{
     }
     else {
       return (
-        <div className="activeUsers">Loading..........</div>
+        <div className="pendingUsers">Loading..........</div>
       );
     }
   }
@@ -48,4 +48,4 @@ class ActiveUsers extends Component{
   
 }
 
-export default ActiveUsers;
+export default PendingUsers;
