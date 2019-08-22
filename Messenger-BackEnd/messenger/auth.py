@@ -8,12 +8,13 @@ class TokenGetAuthMiddleware:
 
     def __call__ (self, scope):
         params = parse_qs(scope["query_string"])
-        print(params)
         if b"token" in params:
             try:
                 token_key = params[b"token"][0].decode()
+                print("Token: " + token_key)
                 token = Token.objects.get(key=token_key)
                 scope["user"] = token.user
+                # scope["token"] = token_key
                 #print(token.user)
             except Token.DoesNotExist:
                 pass

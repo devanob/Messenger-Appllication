@@ -15,8 +15,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from User.urls import router as user_api
+from messenger.urls  import router as messenger_api
+from  .routers import DefaultRouter
+
+
+# url_api = []
+# url_api+= messenger_api.urls
+# url_api+= user_api.urls
+router = DefaultRouter()
+router.extend(user_api)
+router.extend(messenger_api)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include("User.urls")),
+    path('api/', include(router.urls)),
+     path('messages/', include("messenger.urls")),
+
+    
 ]

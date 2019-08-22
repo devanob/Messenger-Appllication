@@ -15,42 +15,16 @@ class contactListAdminForm(forms.ModelForm):
         model = contactList
         fields = '__all__'
 
-class userAdminForm(forms.ModelForm):
 
-    class Meta:
-        model = User
-        fields = '__all__'
 
 class contactListAdmin(admin.ModelAdmin):
     form = contactListAdminForm
     list_display = ['date_created',"friend_ship_initiator","friend"]
     readonly_fields = ['date_created']
-class CustomUserCreateForm(UserCreationForm):
-    email = forms.EmailField(label = "Email", required = True)
-    first_name = forms.CharField(label = "First Name",required = True)
-    last_name = forms.CharField(label = "last_name",required = True)
-    def __init__(self, *args, **kwargs):
-        super(CustomUserCreateForm, self).__init__(*args, **kwargs)
-        self.fields['email'].required = True
-        self.fields['first_name'].required = True
-        self.fields['last_name'].required = True
-    class Meta:
-        model =  User
-        fields = (
-            'username',
-            'first_name',
-            'last_name',
-            'email',
-            'password1',
-            'password2'
-        )
 
 
-class UserAdminForm(forms.ModelForm):
-    
-    class Meta:
-        model = User
-        fields = '__all__'
+
+
 class CustomUserChangeForm(UserChangeForm):
     
     class Meta:
@@ -72,6 +46,14 @@ class CustomerUserAdmin(UserAdmin):
     filter_horizontal = ()
     fieldsets = (
         (('User'), {'fields': ('username', 'email','is_staff', 'uuid', 'user_image')}),
+    )
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'first_name', 'last_name', 'password1',
+                       'password2')}
+         ),
     )
 
 
