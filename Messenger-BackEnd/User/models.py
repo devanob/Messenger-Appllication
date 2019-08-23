@@ -16,26 +16,26 @@ class  User(AbstractUser):
     #my_field = models.IntegerField(default=get_next_increment, editable=False, unique=True)
 
     def get_active_contacts(self):
-        query= User.objects.raw("SELECT DISTINCT Users.Users.* \
-        FROM Users.Users JOIN ContactList \
+        query= User.objects.raw("SELECT DISTINCT Users.* \
+        FROM Users JOIN ContactList \
         ON (ContactList.friend_id = %s \
         OR  \
         ContactList.friend_ship_initiator_id= %s) \
-        AND (ContactList.friend_id = Users.Users.uuid  OR ContactList.friend_ship_initiator_id = Users.Users.uuid) \
+        AND (ContactList.friend_id = Users.uuid  OR ContactList.friend_ship_initiator_id = Users.uuid) \
         AND active_contact = 1", 
         [self.uuid.hex,self.uuid.hex])
         return query
     def get_pending_contacts(self):
         user_uuid = self.uuid.hex
-        query= User.objects.raw("SELECT DISTINCT Users.Users.* \
-        FROM Users.Users JOIN ContactList \
+        query= User.objects.raw("SELECT DISTINCT Users.* \
+        FROM Users JOIN ContactList \
         ON (ContactList.friend_id = %s ) \
-        AND (ContactList.friend_id = Users.Users.uuid  OR ContactList.friend_ship_initiator_id = Users.Users.uuid) \
-        AND active_contact = 0 AND Users.Users.uuid != %s", 
+        AND (ContactList.friend_id = Users.uuid  OR ContactList.friend_ship_initiator_id = Users.uuid) \
+        AND active_contact = 0 AND Users.uuid != %s", 
         [user_uuid,user_uuid])
         return query
     class Meta:
-        db_table = "Users.Users"
+        db_table = "Users"
 
 
 
