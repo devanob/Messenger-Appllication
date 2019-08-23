@@ -43,6 +43,7 @@ export default class MessengerService {
 
         this.reconnectingWebSocket.addEventListener('error', (error) => {
             console.log(error);
+            this.setConnectedWebSocketFlag(false);
             this.setErrorWebSocketFlag(true);
         });
 
@@ -80,6 +81,15 @@ export default class MessengerService {
         }
         )
         
+    }
+
+    getMessages(){
+        return axios.get('http://127.0.0.1:8000/api/message/',
+        this.headersList
+        ).then((response)=>{
+            return response.data;
+        }
+        );
     }
 
     getLoginToken(username=null, password=null, callBack = null){

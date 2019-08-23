@@ -46,6 +46,7 @@ class SideBar extends Component{
       <div className={`sidebar ${rootStore.uiUserStore.getIsActive? "active": ""}`}>
         <Toggler onClickHandlier={this.toggleActiveSideBar}/>
         <ActiveUserComponetToggler stateChangeHandler={this.setUserUiState}/>
+        <Search value={this.state.searchText} onChange={this.setSearchText} children={null}/>
         {toRender}
         
 

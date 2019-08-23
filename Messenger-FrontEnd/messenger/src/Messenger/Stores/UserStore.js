@@ -179,10 +179,10 @@ export default class UserStore {
     asJson(){
       return {
           "activeContacts": this.activeContacts.map((user)=>{
-              return user.toString();
+              return user.asJson();
           }),
           "pendingContacts": this.pendingContacts.map((user)=>{
-            return user.toString();
+            return user.asJson();
           }),
         }
     }

@@ -1,9 +1,11 @@
 import React, {Component} from "react";
 import { observer,inject } from "mobx-react"
-import "../css/Content.css"
 
-@inject("rootStore")
-@observer
+import "../css/Content.css"
+import NavComponet from "./NavComponet";
+import MessageComponet from "./MessageComponet";
+import TextBoxMessageComponet from "./textBoxMessageComponet";
+
 class MainContent extends Component{
   constructor(props){
     super(props);
@@ -28,9 +30,11 @@ class MainContent extends Component{
     const {/*children,*/ rootStore} = this.props;
     //console.log(rootStore.userStore.activeContacts.length);
     return (
-        <div className="content"> 
-        Content
-      </div>
+        <div className="MainContent"> 
+        <NavComponet></NavComponet>
+        <MessageComponet></MessageComponet>
+        <TextBoxMessageComponet></TextBoxMessageComponet>
+        </div>
 
     );
   }
