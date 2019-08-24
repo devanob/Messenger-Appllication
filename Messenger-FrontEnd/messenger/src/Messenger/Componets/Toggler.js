@@ -6,9 +6,12 @@ import React from "react";
  */
 function Toggler(props) {
     const {onClickHandlier = null} = props;
+    if (onClickHandlier == null){
+      
+    }
     return (
       <div className="toggler">
-        <button  onClick ={onClickHandlier}>toggleMe</button>
+        <button  onClick ={onClickHandlier}>Close</button>
       </div>
     );
 }

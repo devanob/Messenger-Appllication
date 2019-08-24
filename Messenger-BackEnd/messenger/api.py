@@ -15,7 +15,7 @@ from django.db.models import Q
 
 
 class UserMessages(viewsets.ViewSet):
-    item_per_group = 30
+    item_per_group = 40
     "Retrieve Messages API User Authentication Required"
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
@@ -23,18 +23,18 @@ class UserMessages(viewsets.ViewSet):
         user = request.user
         query_conditon= Q(user_one=user) | Q(user_two=user)
         message_record = DirectConversationRecords.objects.filter(query_conditon)
-        messageQueries = None
+        messageQueries = []
+        subQuery= "SELECT  * FROM ({})";
 
         for record in message_record:
             query = Messages.objects.filter(direct_conversation_id=record).order_by('-mssg_date_stamp')[:self.item_per_group]
-            if messageQueries is None:
-                messageQueries = query
-            else:
-                messageQueries = query | messageQueries 
-            # print(query.query)
-        print(messageQueries.query)
-        # serializedData.orderby("-direct_conversation_id").orderby("-direct_conversation_id")
-        serializedData = MessagesBasicSerializers(messageQueries, many=True)
+            messageQueries.append(subQuery.format(str(query.query)))
+        finalQuery = query = " UNION ALL  ".join(messageQueries)
+        finalQuery += " ORDER BY direct_conversation_id, mssg_date_stamp"
+        finalQuery = Messages.objects.raw(finalQuery)
+        print(finalQuery.query)
+        #serializedData.orderby("-direct_conversation_id").orderby("-direct_conversation_id")
+        serializedData = MessagesBasicSerializers(finalQuery, many=True)
         return Response(serializedData.data)
         
     def retrieve(self, request, pk):

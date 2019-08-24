@@ -35,10 +35,15 @@ export default class MessagesModel{
     bulkAddMessages(arrayMessage){
        
         arrayMessage.forEach(mssg=>{
-            //this.messages.push(mssg.to_User);
-            if((mssg.to_User === this.user.uuid || mssg.from_User === this.user.uuid)){
+            if ((mssg.to_User === mssg.from_User) && (this.user.uuid ===  mssg.from_User)){
+                console.log("Hello")
+                this.messages.push(mssg);
+                
+            }
+            else if((mssg.to_User === this.user.uuid || mssg.from_User === this.user.uuid) && (mssg.to_User !== mssg.from_User) ){
                 //console.log("ffew");
                 this.messages.push(mssg);
+                
                 
             }
         })

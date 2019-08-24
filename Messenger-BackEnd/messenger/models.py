@@ -20,7 +20,7 @@ class Messages(models.Model):
         on_delete=models.CASCADE, related_name="receiver_contact", 
     )
 
-    mssg_date_stamp = models.DateTimeField(auto_now=True, editable=False)
+    mssg_date_stamp = models.DateTimeField(auto_now=True, editable=False, db_column='mssg_date_stamp')
 
     direct_conversation_id = models.ForeignKey(
         "messenger.DirectConversationRecords",

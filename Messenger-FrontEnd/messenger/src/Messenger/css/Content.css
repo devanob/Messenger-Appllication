@@ -14,13 +14,13 @@
 }
 /* Message Componet Styling */
 .message-componet{
-    width: 100%;
+    
     height: 76%;
     background-color: pink;
     padding-top : 0.3em;
     padding-bottom : 0.3em;
-    padding-left: 0.3em;
-    padding-right: 0.3em;
+    padding-left: 1.8em;
+    padding-right: 1.8em;
     overflow-y: auto;
 }
 
@@ -33,10 +33,47 @@
 
 
 .message-box{
-    background-color: green;
+    
     word-wrap: break-word;
     margin-top: 1em;
-    margin-bottom: 1em;
-    width: 35%;
-    padding: 2em;
+    width: 75%;
+    padding: 1em;
+}
+
+.message-list-area{
+    list-style-type: none;
+    padding: 0;
+}
+
+.message-list-area > li{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    
+}
+
+.message-list-area > li.message.left{
+    justify-content: flex-start;
+    
+    
+}
+
+
+.message-list-area > li.message.right{
+    justify-content: flex-end;
+  
+    
+}
+
+.message-list-area > li.message.left > .message-box{
+    background-color: green;
+    
+}
+
+.message-list-area > li.message.right > .message-box{
+    background-color: blue;
+    
+    
 }
