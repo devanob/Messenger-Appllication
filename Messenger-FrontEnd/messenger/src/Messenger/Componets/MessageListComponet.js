@@ -1,26 +1,22 @@
 import React, {Component} from "react";
-import { observable, computed, action, decorate, configure,} from "mobx";
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react';
 import MessageInstanceComponet from "./MessageInstanceComponet";
 
-@inject("rootStore")
-@observer
-export default  class MessageListComponet extends Component{
+//Handles MessageInstance For Each User-ie Provides A List Of Message Depending On The Active User
+class MessageListComponet extends Component{
   constructor(props){
     super(props)
   }   
 
   render() {
-    const {messages = null, activeUser = null} = this.props;
-    console.log("SEMI-Colons");
-    console.log(messages);
-    console.log(activeUser);    
+    const {messages = null, activeUser = null} = this.props;   
     return (
         <ul className="message-list-area">
              {messages.map(mssg=>{
                     return (
-                        <MessageInstanceComponet 
+                        <MessageInstanceComponet
+                            key = {mssg.id}
                             message={mssg}
                             activeUser = {activeUser}
                         >
@@ -35,5 +31,5 @@ export default  class MessageListComponet extends Component{
   
 }
 
-
+export default  inject("rootStore")(observer(MessageListComponet))
  

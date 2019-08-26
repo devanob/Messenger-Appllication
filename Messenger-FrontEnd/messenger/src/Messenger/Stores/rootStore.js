@@ -18,7 +18,6 @@ export default class RootStore {
         this.uiUserStore = new UIUserStore(this);
         this.userMessageStore = new UserMessageStore(this,this.transportLayer)
         this.startAsyncServices().then((num)=>{
-            console.log(num);
         }).catch(error=>{
             console.log(error);
         })
@@ -29,9 +28,7 @@ export default class RootStore {
         //await this.transportLayer.setUpWebSocket();
         await this.userStore.asyncLoadData();
         await this.userMessageStore.setContactUsers(this.userStore.listActiveContacts)
-        console.log("Set Contact");
         await this.userMessageStore.loadMessages();
-        console.log(this.userMessageStore.asJson());
         return true;
     }
 }

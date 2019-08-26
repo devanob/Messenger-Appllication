@@ -13,11 +13,13 @@ class Messages(models.Model):
     # Relationship Fields
     from_User = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE, related_name="sender_contact", 
+        on_delete=models.CASCADE, related_name="sender_contact",
+        db_column='from_User'
     )
     to_User = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE, related_name="receiver_contact", 
+        on_delete=models.CASCADE, related_name="receiver_contact",
+        db_column='to_User'
     )
 
     mssg_date_stamp = models.DateTimeField(auto_now=True, editable=False, db_column='mssg_date_stamp')

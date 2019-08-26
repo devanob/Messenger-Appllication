@@ -1,4 +1,4 @@
-import { observable, computed, action, configure} from "mobx";
+import { observable, computed, action, configure, decorate} from "mobx";
 
 configure({ enforceActions: 'observed' })
 //IMPORTS
@@ -7,14 +7,16 @@ configure({ enforceActions: 'observed' })
 /**
  * This Class Acts As A Store For SideBar UI state 
  */
-export default class UIUserStore {
+
+//UI Store Storeses Various States Of THe UI From Side Bar To Main Content
+class UIUserStore {
     viableStates = [
         "ACTIVECONTACTS",
         "PENDNGCONTACT",
         "SEARCHUSER",
     ]
-    @observable activeElement= "ACTIVECONTACTS";
-    @observable isActive = true;
+    activeElement= "ACTIVECONTACTS";
+    isActive = true;
     store = null
     /**
      * 
@@ -23,21 +25,17 @@ export default class UIUserStore {
     constructor(store=null){
         this.store = store;
     }
-    @computed
     get getActiveElement(){
         return this.activeElement;
     }
-    @computed
     get getIsActive(){
         return this.isActive;
     }
 
-    @action
     toggleSideBarActive(){
         this.isActive = !this.isActive;
     }
 
-    @action
     setActiveElement(stateString){
         if (this.viableStates.includes(stateString)){
             this.activeElement = stateString;
@@ -48,6 +46,17 @@ export default class UIUserStore {
         }
     }
     
-
-
 }
+
+decorate(UIUserStore, 
+    {
+    activeElement: observable, 
+    isActive: observable, 
+    getActiveElement: computed,
+    getIsActive : computed,
+    toggleSideBarActive: action,
+    setActiveElement: action
+    }
+)
+
+export default  UIUserStore;

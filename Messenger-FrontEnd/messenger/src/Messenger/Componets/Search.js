@@ -1,4 +1,6 @@
 import React, {Component} from "react";
+
+//Provides Search Functionality Throught TextInput Send Text Event To Handlier(Parent-)
 class Search extends Component{
     constructor(props){
       super(props);

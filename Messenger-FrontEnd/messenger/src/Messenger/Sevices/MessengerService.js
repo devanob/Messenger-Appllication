@@ -1,17 +1,19 @@
 import axios from "axios";
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import { observable, action, configure} from "mobx";
+ import {observable, action, configure, decorate, reaction, computed} from "mobx";
 
 configure({ enforceActions: 'observed' })
 
-export default class MessengerService {
+class MessengerService {
 
     //LogIn Token Key 
     tokenHeaderReady = null;
     reconnectingWebSocket = null;
+    //Check if the websocket is connected yet yet?
+    webSocketisConnected = false;
+    webSocketisError = false;
+    isLoggin = false;
     authToken = null;
-    @observable webSocketConnected = false;
-    @observable webSocketError = false;
     constructor(){
         this.headersList = {
             headers:{"Content-Type": 'application/json'},
@@ -20,17 +22,16 @@ export default class MessengerService {
        
         
     }
-
-    @action
+    setWebSocketError(value){
+        this.webSocketisError = value;
+    }
+    setLoggedIn(value){
+        this.isLoggin = value;
+    }
     setConnectedWebSocketFlag(value){
-        this.webSocketConnected = value;
+       this.webSocketisConnected = true;
     }
-
-    @action
-    setErrorWebSocketFlag(value){
-        this.webSocketError = value;
-    }
-    
+  
     async setUpWebSocket(){
         
         let url = `ws://127.0.0.1:8000/ws/messenger/?token=${this.authToken}`;
@@ -58,7 +59,7 @@ export default class MessengerService {
        
        let  messageService = new MessengerService();
        await messageService.getLoginToken(usernamePassWord.username, usernamePassWord.password).then(mssg=>{
-           console.log(mssg);
+           console.log("hbfhjfhjejehjhefvh");
        }).catch(error=>{
            console.log(error);
        });
@@ -111,10 +112,7 @@ export default class MessengerService {
             this.headersList.headers["Authorization"] = `Token ${userLoginInfo.token}`;
             this.tokenHeaderReady = true;
             this.authToken = userLoginInfo.token;
-            if (callBack != null){
-                callBack();
-            }
-           // console.log("Hello");
+            this.setLoggedIn(true)
             return this.headersList.headers["Authorization"];
             
         });
@@ -133,3 +131,14 @@ export default class MessengerService {
     // }
 }
 
+
+decorate(MessengerService, {
+    webSocketisConnected : observable,
+    isLoggin :observable,
+    webSocketisConnected : observable, 
+    setConnectedWebSocketFlag: action,
+    setLoggedIn: action,
+    setWebSocketError: action
+
+})
+export default MessengerService

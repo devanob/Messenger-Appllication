@@ -3,10 +3,9 @@ import React from "react";
  * 
  * @param {*} props - incoming props from managing componet
  */
-
+//Toggler That Provides User With Ui Option Chnages Such As Active Contact or a list of pending contact
 function ActiveUserComponetToggler(props) {
     const {stateChangeHandler= null} = props;
-    console.log(stateChangeHandler);
     return (
       <div className="users-type-toggler">
         <ul className="users-type-toggler-list">

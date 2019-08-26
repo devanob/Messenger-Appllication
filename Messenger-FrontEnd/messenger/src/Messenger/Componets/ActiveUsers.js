@@ -1,23 +1,23 @@
 import React, {Component} from "react";
 import { observer,inject } from "mobx-react"
 import ActiveUser from "./ActiveUser"
-@inject("rootStore")
-@observer
+
+//Manages UI Active Users Displayed To The User
 class ActiveUsers extends Component{
   constructor(props){
     super(props)
-    console.log(props);
   }   
 
   render() {
-    const {/*children,*/ rootStore,searchText} = this.props;
+    const {rootStore,searchText} = this.props;
     let activeUsers = rootStore.userStore.listActiveContacts;
     let loading = rootStore.userStore.getIsLoadingActive;
     if (!loading){
+      //f not active user 
       if (!activeUsers){
         return (
           <div className="activeUsers">
-              YOu Have No Contacts
+              YOu Have No Contacts..Try Adding Some In The Search User Menu
           </div>
          );
       } 
@@ -48,4 +48,4 @@ class ActiveUsers extends Component{
   
 }
 
-export default ActiveUsers;
+export default inject("rootStore")(observer(ActiveUsers));

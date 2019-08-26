@@ -1,39 +1,63 @@
 import MessagesModel from "../Models/MessagesModel"
-import { observable, computed, action, decorate, configure} from "mobx";
+import { observable, computed,
+        action, decorate, 
+        configure, reaction} from "mobx";
 
 configure({ enforceActions: 'observed' })
 //IMPORTS
 //Model The Users Contacts And Potential Contacts
-export default class UserMessageStore{
+
+//Manages User Messages Store Data Oritented Container To Manager User Message
+class UserMessageStore{
     /**
      *
      * @param {*} storeOwner-Store Owner-Owned By This Store Instance
      */
-    @observable userMesagesModels =  {};// {usename:null, uuid:null};
-    @observable isLoadingMesagesFlag= true//observable.box(true);
-    @observable loadingMessagesError= false;
+    userMesagesModels =  {};// list of users json and there corrsponing messages 
+    isLoadingMesagesFlag= true // if loading messages from server and setting up
+    loadingMessagesError= false; // error loading messages
     transporLayer = null;
+    //This is the message with user that will be sent over websocket
+    contructedMessage = {toUser: null , message : ""};
     constructor(store=null,transporLayer=null){
         this.store = store;
         this.transporLayer = transporLayer;
-        //this.loadContacts();ls   
+        if (this.store != null){
+            //react to active user changes 
+            //reset message content
+            reaction ( 
+                ()=>{
+                    return this.store.userStore.currentActiveUser;
+                }, 
+                user=>{
+                    this.contructedMessage.message = "";
+                    this.contructedMessage.toUser= user;
+                    console.log(this.contructedMessage)
+                }
+             )
+        }
+        
     }
-    @action
+    get contructedMessageInternelMessage(){
+        return this.contructedMessage.message;
+    }
+    setMessageText(textMessage){
+        this.contructedMessage.message = textMessage
+    }
     setContactUsers(listContactUser){
         return new Promise((resolve, reject)=>{
             this.userMesagesModels = {}
             listContactUser.forEach(user=>{
                 let userUUID = user.uuid;
-                //this.userMesagesModels.push({userUUID : new MessagesModel(this,user)});
                 this.userMesagesModels[userUUID] = new MessagesModel(this,user)
             })
             resolve(true);
         })
         
-        //console.log(this.userMesages)
+        
     }
     //This returns all the message it is up to the client to  sort what group of messages then want
-    @computed get getMessages(){
+    get getMessages(){
         return this.userMesagesModels;
     }
     async loadMessages(){
@@ -43,13 +67,12 @@ export default class UserMessageStore{
                 for (let key in this.userMesagesModels){
                     this.userMesagesModels[key].bulkAddMessages(mssgsJson);
                 }
-                // this.userMesagesModels.forEach(model=>{
-                //     console.log("loadMssgs");
-                //     console.log(model);
-                //     model.bulkAddMessages(mssgsJson);
-                // })
+               
             })
         }
+    }
+    get getContructedMessage(){
+        return this.contructedMessage;
     }
     asJson(){
       return {
@@ -67,3 +90,16 @@ export default class UserMessageStore{
     }
 }
 
+decorate(UserMessageStore, {
+    userMesagesModels: observable,
+    isLoadingMesagesFlag:observable, 
+    loadingMessagesError:observable,
+    setContactUsers : action,
+    getMessages: computed,
+    contructedMessage : observable,
+    getContructedMessage: computed,
+    setMessageText : action,
+    contructedMessageInternelMessage : computed
+})
+
+export default UserMessageStore;

@@ -7,8 +7,7 @@ import ActiveUsers from "./ActiveUsers"
 import PendingUsers from "./PendingUsers"
 import ActiveUserComponetToggler from "./ActiveUserComponetToggler"
 
-@inject("rootStore")
-@observer
+//Manages The Most Top Layer Of The Side Bar U.I
 class SideBar extends Component{
   constructor(props){
     super(props);
@@ -18,20 +17,23 @@ class SideBar extends Component{
     };
     
   }
-
+  //Toggles The Side Bar 
   toggleActiveSideBar =()=>{
     this.props.rootStore.uiUserStore.toggleSideBarActive();
   }
+  //Handles Text Change in child componet Search 
   setSearchText = (event)=>{
     this.setState(
         {
           searchText : event.target.value 
         }
       )
-  }   
+  } 
+  //Set which Ui Componet Should Be Rendered
   setUserUiState =(state)=>{
     this.props.rootStore.uiUserStore.setActiveElement(state);
   }
+  //Render Componet
   render() {
     const {/*children,*/ rootStore} = this.props;
     let userStateUI = rootStore.uiUserStore.getActiveElement;
@@ -55,6 +57,7 @@ class SideBar extends Component{
 
     );
   }
+  //Viables State Changes 
   viableStates = [
     "ACTIVECONTACTS",
     "PENDNGCONTACT",
@@ -71,4 +74,4 @@ class SideBar extends Component{
   
 }
 
-export default SideBar ;
+export default inject("rootStore")(observer(SideBar));

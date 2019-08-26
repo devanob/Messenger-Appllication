@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import { observer,inject } from "mobx-react"
-@observer
+import { observer} from "mobx-react"
+
+//Provides A List Of Pending Users
 class PendingUser extends Component{
   constructor(props){
     super(props)
@@ -12,7 +13,7 @@ class PendingUser extends Component{
     //this.props.user.setUserActive();
   }
   render() {
-    const {/*children,*/ user=null} = this.props;
+    const {user=null} = this.props;
     
     return (
       <li onClick={this.setActive} >
@@ -32,5 +33,4 @@ class PendingUser extends Component{
   
   
 }
-
-export default PendingUser ;
+export default observer(PendingUser) ;

@@ -1,39 +1,52 @@
 import React, {Component} from "react";
-import { observer,inject } from "mobx-react"
-
 import "../css/Content.css"
 import NavComponet from "./NavComponet";
 import MessageComponet from "./MessageComponet";
 import TextBoxMessageComponet from "./textBoxMessageComponet";
+import { inject, observer } from 'mobx-react';
 
+//Handles The Main Content 
 class MainContent extends Component{
   constructor(props){
+    //Set internel state for any text chage by the user 
     super(props);
-
     this.state = {
         searchText: ""
     };
     
   }
-
+  //Toggle The SideBar in the store
   toggleActiveSideBar =()=>{
     this.props.rootStore.uiUserStore.toggleSideBarActive();
   }
-  setSearchText = (event)=>{
-    this.setState(
-        {
-          searchText : event.target.value 
-        }
-      )
-  } 
+  //Handles Text Chnage Events
+  setMessageToSend= (event)=>{
+    
+    let messageText = event.target.value;
+    const {rootStore} = this.props;
+    if (messageText.trim().length > 0 ){
+      rootStore.userMessageStore.setMessageText(messageText);
+    }
+    else {
+      rootStore.userMessageStore.setMessageText("");
+    }
+    
+      
+  }
   render() {
-    const {/*children,*/ rootStore} = this.props;
+    const {rootStore} = this.props;
+    const messgObject = rootStore.userMessageStore;
+    //For Text Input 
+    //const messageStore = rootStore.
     //console.log(rootStore.userStore.activeContacts.length);
     return (
         <div className="MainContent"> 
-        <NavComponet></NavComponet>
-        <MessageComponet></MessageComponet>
-        <TextBoxMessageComponet></TextBoxMessageComponet>
+          <NavComponet></NavComponet>
+          <MessageComponet></MessageComponet>
+          <TextBoxMessageComponet
+              messgObject = {messgObject}
+              onTextChange={this.setMessageToSend}
+          ></TextBoxMessageComponet>
         </div>
 
     );
@@ -49,4 +62,4 @@ class MainContent extends Component{
   
 }
 
-export default  MainContent;
+export default inject("rootStore")(MainContent);

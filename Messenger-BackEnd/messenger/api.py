@@ -29,10 +29,9 @@ class UserMessages(viewsets.ViewSet):
         for record in message_record:
             query = Messages.objects.filter(direct_conversation_id=record).order_by('-mssg_date_stamp')[:self.item_per_group]
             messageQueries.append(subQuery.format(str(query.query)))
-        finalQuery = query = " UNION ALL  ".join(messageQueries)
+        finalQuery = query = " UNION ALL ".join(messageQueries)
         finalQuery += " ORDER BY direct_conversation_id, mssg_date_stamp"
         finalQuery = Messages.objects.raw(finalQuery)
-        print(finalQuery.query)
         #serializedData.orderby("-direct_conversation_id").orderby("-direct_conversation_id")
         serializedData = MessagesBasicSerializers(finalQuery, many=True)
         return Response(serializedData.data)

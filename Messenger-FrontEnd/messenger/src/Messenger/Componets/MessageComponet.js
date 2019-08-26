@@ -1,24 +1,18 @@
 import React, {Component} from "react";
-import { observable, computed, action, decorate, configure,} from "mobx";
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react';
 import MessageListComponet from "./MessageListComponet";
-
-@inject("rootStore")
-@observer
-export default  class MessageComponet extends Component{
+//Manages The Ui Componet 
+class MessageComponet extends Component{
   constructor(props){
     super(props)
-    console.log(props);
   }   
 
   render() {
     const { rootStore} = this.props;
     let activeUser = rootStore.userStore.currentActiveUser;
     let messages = rootStore.userMessageStore.getMessages
-    console.log(messages);
     let  objectToRender = null;
-    console.log(activeUser);
     if (activeUser == null ){
         objectToRender = <div>No Active User Click On One</div>
     }
@@ -49,5 +43,6 @@ export default  class MessageComponet extends Component{
   
 }
 
+export default  inject("rootStore")(observer(MessageComponet));
 
  

@@ -1,12 +1,11 @@
 import React, {Component} from "react";
 import { observer,inject } from "mobx-react"
 import PendingUser from "./PendingUser"
-@inject("rootStore")
-@observer
+
+//Manages A List Of Pending Users Instances
 class PendingUsers extends Component{
   constructor(props){
     super(props)
-    console.log(props);
   }   
 
   render() {
@@ -48,4 +47,4 @@ class PendingUsers extends Component{
   
 }
 
-export default PendingUsers;
+export default inject("rootStore")(observer(PendingUsers));

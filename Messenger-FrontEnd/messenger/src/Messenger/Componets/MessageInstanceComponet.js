@@ -1,10 +1,9 @@
 import React, {Component} from "react";
-import { observable, computed, action, decorate, configure,} from "mobx";
-import { inject } from 'mobx-react';
 import { observer } from 'mobx-react';
 
-@observer
-export default  class MessageInstanceComponet extends Component{
+
+//Handles One UI Message Instance ie. MessageBox 
+class MessageInstanceComponet extends Component{
   constructor(props){
     super(props)
   }   
@@ -32,5 +31,5 @@ export default  class MessageInstanceComponet extends Component{
   
 }
 
-
+export default  observer(MessageInstanceComponet);
  

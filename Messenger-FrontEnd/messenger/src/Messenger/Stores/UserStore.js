@@ -9,7 +9,7 @@ export default class UserStore {
      *
      * @param {*} storeOwner-Store Owner-Owned By This Store Instance
      */
-    @observable currentActiveUser=  null;// {usename:null, uuid:null};
+    currentActiveUser=  null;// {usename:null, uuid:null};
     activeContacts = []
     pendingContacts = []
     isLoadingActiveContactsFlag= true//observable.box(true);
@@ -116,9 +116,7 @@ export default class UserStore {
 
     }
     setActiveContact(idUsername){
-        //console.log("Here");
-        //console.log("Active Contact");
-        //console.log(idUsername);
+     
         if (this.activeContacts.length === 0 || idUsername === null){
             return false; 
         }
@@ -145,7 +143,6 @@ export default class UserStore {
             return false;
         }   
         else{
-            console.log("we have Active user");
             return this.activeContacts;
             
             
@@ -153,11 +150,9 @@ export default class UserStore {
     }
     get listPendingContacts(){
         if (this.pendingContacts === null || this.pendingContacts.length === 0){
-            //console.log("NO Active user");
             return false;
         }   
         else{
-            console.log("we have Active user");
             return this.pendingContacts;
             
             
@@ -207,5 +202,6 @@ decorate(UserStore , {
     setActiveContact : action,
     loadingActiveError: observable,
     loadingPendingError: observable,
-    listPendingContacts: computed
+    listPendingContacts: computed, 
+    currentActiveUser:observable
 })

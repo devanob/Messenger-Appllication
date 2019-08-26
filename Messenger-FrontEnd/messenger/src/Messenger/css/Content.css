@@ -35,9 +35,10 @@
 .message-box{
     
     word-wrap: break-word;
-    margin-top: 1em;
-    width: 75%;
+    margin-top: 0.5em;
+    width: 65%;
     padding: 1em;
+    border-radius: 0.5em;
 }
 
 .message-list-area{
@@ -69,6 +70,7 @@
 
 .message-list-area > li.message.left > .message-box{
     background-color: green;
+    color: white;
     
 }
 
@@ -77,3 +79,32 @@
     
     
 }
+/* TextArea */
+
+.text-box-message-componet{
+    display: flex;
+    flex-direction: row;
+}
+
+.text-box-message-componet .textBox{
+
+    width: 80%;
+    display: flex;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 0.2em;
+}
+.text-box-message-componet .textBox textarea{
+    
+    height: auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    padding-left: 0.1em;
+    padding-right: 0.1em;
+    font-size: 2em;
+    vertical-align: middle;
+    border-radius: 1em;
+}
+

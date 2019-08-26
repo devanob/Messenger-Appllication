@@ -3,25 +3,30 @@
 --------------------------------*/
 .sidebar{
     background-color: green;
-    transition: width 0.5s;
+    /* transition: width 0.5s; */
     width: 0%;
     display: flex;
     flex-direction: column;
     width:0;
-    padding: 0
+    padding: 0;
+    visibility: hidden;
+    transition: all 0.5s ease;
   
   }
   
-  /* .sidebar.active{
+  .sidebar.active{
     width:100vw;
     padding: 0.5;
-  } */
+    visibility: visible;
+  }
   
-  /* // Small devices (landscape phones, 34em and up) */
+  
+  
   @media (min-width:  576px) { 
     .sidebar.active{
       width:100vw;
       padding: 0.5;
+      visibility: visible;
     }
    }
   
@@ -30,6 +35,7 @@
     .sidebar.active{
       width:100vw;
       padding: 0.5;
+      visibility: visible;
     }
    }
 
@@ -37,24 +43,22 @@
     .sidebar.active{
       width:25vw;
       padding: 0.5;
+      visibility: visible;
     }
    }
   
   /* // Large devices (desktops, 62em and up) */
   @media (min-width: 1200px) { 
     .sidebar.active{
-      width:30vw;
+      width:25vw;
       padding: 0.5;
+      visibility: visible;
     }
   }
-  
 
-  @media (min-width: 75em) { 
-    .sidebar.active{
-      width:30vw;
-      padding: 0.5;
-    }
-   }
+
+
+  
 
 
   /* Toggler 
@@ -88,6 +92,7 @@
   margin: 0;
   border: 0;
   padding: 1em;
+  border-radius: 1em;
 
 }
 
@@ -127,6 +132,7 @@
   height: 15%;
   overflow: visible;
   width: 100%;
+  
 }
 
 .activeUsers .users li > a{
@@ -138,7 +144,8 @@
   height: 100%;
   text-shadow: 0 1px 0 #f3f3f3;
   border-top-left-radius: 0.1em;
-  border-width: 3px 0 0;
+  border-width: 5px 0 0;
+  text-decoration: none;
 
 
  
@@ -153,6 +160,9 @@
 
 .activeUsers .users .profile-img{
   width: 25%;
+  border-radius : 50%;
+  overflow: hidden;
+  
 
 }
 
@@ -161,9 +171,18 @@
 
 }
 
+.activeUsers  .users .contact-info h3 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: 1em;
+}
+
 .profile-img img {
   width: 100%;
   height:100%;
+  object-fit : cover;
 }
 
 .activeUsers ul {
