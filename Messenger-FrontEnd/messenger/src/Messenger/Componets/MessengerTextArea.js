@@ -7,15 +7,16 @@ export default  class MessengerTextArea extends Component{
   }   
   componentDidUpdate(){
     let textAreaDOME = this.textInputEnter.current;
-    textAreaDOME.addEventListener("keydown", (event)=>{
-        if (event.code ==="Enter"){
-            console.log("We Good");
-        }
-    }, false);
-    }
+    textAreaDOME.addEventListener("keyup",this.onEnter, false);
+  }
 
-  onEnter(event){
-    console.log(event);
+  onEnter= (event)=>{
+    const {sendMessageHandlier=null} = this.props;
+    if (event.code === "Enter"){
+      if (sendMessageHandlier != null){
+        sendMessageHandlier();
+      }
+  }
   }
   render() {
     const {text = null , onTextChange= null} = this.props;

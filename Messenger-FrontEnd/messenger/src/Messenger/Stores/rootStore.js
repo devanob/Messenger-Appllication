@@ -25,7 +25,6 @@ export default class RootStore {
     //Start Async Services That are need as soon a 
     async startAsyncServices(){
         await this.transportLayer.getLoginToken("Devano", "11kingie");
-        //await this.transportLayer.setUpWebSocket();
         await this.userStore.asyncLoadData();
         await this.userMessageStore.setContactUsers(this.userStore.listActiveContacts)
         await this.userMessageStore.loadMessages();

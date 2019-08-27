@@ -30,19 +30,67 @@ class UserMessageStore{
                     return this.store.userStore.currentActiveUser;
                 }, 
                 user=>{
-                    this.contructedMessage.message = "";
-                    this.contructedMessage.toUser= user;
-                    console.log(this.contructedMessage)
+                    this.setMessageText("");
+                    this.setMessageUser(user);
+                    // console.log(this.contructedMessage)
                 }
              )
+            if (this.transporLayer!== null){
+                this.transporLayer.addEventListenerHandlier(
+                    "message",this.receiveMessage
+                    )
+            }
         }
         
+    }
+    receiveMessage = (event)=>{
+        let to_UserModel = this.userMesagesModels[event.to_User];
+        let from_UserModel = this.userMesagesModels[event.from_User]
+        if (to_UserModel !== null & typeof to_UserModel !== "undefined"){
+            to_UserModel.addMessage(event);
+        }
+        if (from_UserModel !== null & typeof from_UserModel !== "undefined"){
+            from_UserModel.addMessage(event);
+        }
+        else {
+            console.log("Not A Contact")
+        }
+    }
+    //sends the current message 
+    sendMessage(){
+        //make sure the current active user and the cached message are the same
+        if (this.contructedMessage.toUser === null){
+            return;
+        }
+        if (this.contructedMessage.toUser.uuid === this.store.userStore.currentActiveUser.uuid 
+            & this.contructedMessageInternelMessage.trim().length > 0 ){
+            let messageJson = this.constructMessageToSend() 
+            console.log(messageJson);
+            this.transporLayer.sendMessageWebSocket(messageJson);
+
+        }
+        //seems they are not in sync time to fix that 
+        else{
+            console.log("reset");
+            this.setMessageText("");
+            this.setMessageUser(this.store.userStore.currentActiveUser);
+        }
+    }
+    constructMessageToSend(){
+        let messageAsJson = {
+            toUser: this.contructedMessage.toUser.uuid,
+            message : this.contructedMessage.message.trim()
+        }
+        return messageAsJson;
     }
     get contructedMessageInternelMessage(){
         return this.contructedMessage.message;
     }
     setMessageText(textMessage){
         this.contructedMessage.message = textMessage
+    }
+    setMessageUser(currentActiveUser){
+        this.contructedMessage.toUser = currentActiveUser;
     }
     setContactUsers(listContactUser){
         return new Promise((resolve, reject)=>{
@@ -99,7 +147,10 @@ decorate(UserMessageStore, {
     contructedMessage : observable,
     getContructedMessage: computed,
     setMessageText : action,
-    contructedMessageInternelMessage : computed
+    contructedMessageInternelMessage : computed,
+    setMessageUser: action,
+    sendMessage : action
+
 })
 
 export default UserMessageStore;

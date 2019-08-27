@@ -31,7 +31,7 @@ class MessagesModel{
     
     addMessage(mssgJson){
 
-        if (mssgJson.to_User === this.user || mssgJson.from_User === this.user ){
+        if (mssgJson.to_User === this.user.uuid || mssgJson.from_User === this.user.uuid ){
             this.messages.push(mssgJson)
         }
     }
@@ -40,16 +40,7 @@ class MessagesModel{
     bulkAddMessages(arrayMessage){
        
         arrayMessage.forEach(mssg=>{
-            if ((mssg.to_User === mssg.from_User) && (this.user.uuid ===  mssg.from_User)){
-                this.messages.push(mssg);
-                
-            }
-            else if((mssg.to_User === this.user.uuid || mssg.from_User === this.user.uuid) && (mssg.to_User !== mssg.from_User) ){
-                //console.log("ffew");
-                this.messages.push(mssg);
-                
-                
-            }
+            this.addMessage(mssg);
         })
         //console.log(this.messages)
     }

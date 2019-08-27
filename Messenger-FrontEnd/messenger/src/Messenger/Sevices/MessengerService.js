@@ -1,6 +1,6 @@
 import axios from "axios";
 import ReconnectingWebSocket from 'reconnecting-websocket';
- import {observable, action, configure, decorate, reaction, computed} from "mobx";
+ import {observable, action, configure, decorate, reaction, computed, when} from "mobx";
 
 configure({ enforceActions: 'observed' })
 
@@ -14,14 +14,94 @@ class MessengerService {
     webSocketisError = false;
     isLoggin = false;
     authToken = null;
+    eventListener = {};
     constructor(){
         this.headersList = {
             headers:{"Content-Type": 'application/json'},
         };
-        //if the usernmae and password is supplied then get the token from the server
-       
+        //check for login changes
+        when (
+            //when we know the user is logged then run the predicate
+            ()=>{
+                return this.isLoggedIn;
+            },
+            ()=>{
+                this.setUpWebSocket();
+            }
+
+        
+        )
         
     }
+    /**
+     * Handlier Adding Event For Varius Application Such As Message
+     */
+    addEventListenerHandlier(eventType = null, functionHandlier =null){
+
+        if (eventType === null | functionHandlier === null | !eventType instanceof String){
+        // it's a string){
+            console.log("Cannot Add Empty Event Or Handliers or null or not string");
+        }
+        else {
+            let arrayHandliers = this.eventListener[eventType];
+            if (arrayHandliers !== null & typeof arrayHandliers !== 'undefined' ){
+                //push an an event  to the current event handier queue
+                arrayHandliers.push(functionHandlier);
+            }
+            else {
+                this.eventListener[eventType] = [];
+                this.eventListener[eventType].push(functionHandlier)
+            }
+
+
+        }
+        
+        
+    }
+    //handles events from the web-socket
+    eventReceiverHandlier =(event)=>{
+        let eventJson = JSON.parse(event.data);
+        let eventType = eventJson.type.trim().toLowerCase();
+        if (typeof eventType !== 'undefined' | eventType !== null ){
+            let arrayHandliers= this.eventListener[eventType];
+            if (arrayHandliers !== null | typeof arrayHandliers !== 'undefined' ){
+                arrayHandliers.forEach(handlier=>{
+                    try {
+                        if (handlier.length  < 1){
+                            handlier();
+                        }
+                        else {
+                            handlier(eventJson);
+                        }
+                    }
+                    catch(error){
+                        console.log(error);
+                    }
+                })
+            }
+        }
+    }
+    get isLoggedIn(){
+        return this.isLoggin;
+    }
+    ///send message vio websocket to the host
+    sendMessageWebSocket(message){
+         //add message type 
+         return new Promise((resolve,reject)=>{
+             //if we are connected to the server
+            if (this.webSocketisConnected){
+                message['type'] = "message"
+                message = JSON.stringify(message)
+                this.reconnectingWebSocket.send(message);
+                resolve(true); //we were able to send the message
+            }
+            else { //we are not connected to the server 
+                reject(false);
+            }
+         })
+        
+    }
+
     setWebSocketError(value){
         this.webSocketisError = value;
     }
@@ -39,22 +119,25 @@ class MessengerService {
         this.reconnectingWebSocket.addEventListener('open', () => {
             console.log("Connected To WebSocket");
             this.setConnectedWebSocketFlag(true);
-            this.setErrorWebSocketFlag(false);
+            //this.setErrorWebSocketFlag(false);
         });
 
         this.reconnectingWebSocket.addEventListener('error', (error) => {
             console.log(error);
             this.setConnectedWebSocketFlag(false);
-            this.setErrorWebSocketFlag(true);
+            //this.setErrorWebSocketFlag(true);
         });
 
         this.reconnectingWebSocket.addEventListener('close', (mssg) => {
             console.log("Disconnected To WebSocket");
             this.setConnectedWebSocketFlag(false);
         });
+        this.reconnectingWebSocket.addEventListener('message', this.eventReceiverHandlier )
+            
           
         
     }
+    //
     static async createWithLoginToken(usernamePassWord=null){
        
        let  messageService = new MessengerService();
@@ -138,7 +221,8 @@ decorate(MessengerService, {
     webSocketisConnected : observable, 
     setConnectedWebSocketFlag: action,
     setLoggedIn: action,
-    setWebSocketError: action
+    setWebSocketError: action,
+    isLoggedIn: computed
 
 })
 export default MessengerService

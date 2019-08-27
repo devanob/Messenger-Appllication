@@ -8,11 +8,13 @@ class TextBoxMessageComponet extends Component{
   }   
   
   render() {
-    const {onTextChange=null, messgObject=null} = this.props;
+    const {onTextChange=null, messgObject=null, sendMessageHandlier=null} = this.props;
     const text =  messgObject.contructedMessageInternelMessage;
+
     return (
       <div className = "text-box-message-componet">
-        <MessengerTextArea  
+        <MessengerTextArea 
+              sendMessageHandlier= {sendMessageHandlier}
               text = {text}
               onTextChange={onTextChange}></MessengerTextArea>
       </div>

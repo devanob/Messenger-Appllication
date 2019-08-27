@@ -7,12 +7,22 @@ import MessageInstanceComponet from "./MessageInstanceComponet";
 class MessageListComponet extends Component{
   constructor(props){
     super(props)
+    this.ulRef = React.createRef();
   }   
-
+  componentDidUpdate(){
+    this.ulRef.current.scrollTop =  this.ulRef.current.scrollHeight;
+    console.log( this.ulRef.current.scrollHeight);
+    
+    
+  }
+  componentDidMount(){
+    this.ulRef.current.scrollTop =  this.ulRef.current.scrollHeight;
+    console.log( this.ulRef.current.scrollHeight);
+  }
   render() {
     const {messages = null, activeUser = null} = this.props;   
     return (
-        <ul className="message-list-area">
+        <ul ref={this.ulRef } className="message-list-area">
              {messages.map(mssg=>{
                     return (
                         <MessageInstanceComponet
@@ -20,7 +30,6 @@ class MessageListComponet extends Component{
                             message={mssg}
                             activeUser = {activeUser}
                         >
-
                         </MessageInstanceComponet>
                         )
             })}

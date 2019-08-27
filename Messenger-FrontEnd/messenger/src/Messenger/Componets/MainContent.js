@@ -33,6 +33,11 @@ class MainContent extends Component{
     
       
   }
+  sendMessageHandlier =()=>{
+    const {rootStore} = this.props;
+    const userMessageStore = rootStore.userMessageStore;
+    userMessageStore.sendMessage();
+  }
   render() {
     const {rootStore} = this.props;
     const messgObject = rootStore.userMessageStore;
@@ -46,6 +51,7 @@ class MainContent extends Component{
           <TextBoxMessageComponet
               messgObject = {messgObject}
               onTextChange={this.setMessageToSend}
+              sendMessageHandlier = {this.sendMessageHandlier}
           ></TextBoxMessageComponet>
         </div>
 
