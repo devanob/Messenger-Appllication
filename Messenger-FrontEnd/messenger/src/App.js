@@ -4,7 +4,7 @@ import SideBar from "./Messenger/Componets/SideBar"
 import MainContent from "./Messenger/Componets/MainContent"
 function App() {
   return (
-    <div className="container">
+    <div className="container-messenger">
       <SideBar/>
       <MainContent />
     </div>

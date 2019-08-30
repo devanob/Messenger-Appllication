@@ -41,4 +41,25 @@ it("Testing Messenger Service-Login Token", async () => {
 
   });
 
+  it("Testing Messenger Service-Accept Contact Request", async () => {
+    let messengerModule = new MessengerService();
+    await messengerModule.getLoginToken("Devano", "11kingie");
+    await messengerModule.acceptContactRequest("02899e8b-cc11-4a3a-8d07-5e05a8ab4f5b").then(reponse=>{
+      console.log(reponse);
+    });
+    
+  });
+
+  it("Testing Messenger Service-Deny Contact Request", async () => {
+    let messengerModule = new MessengerService();
+    await messengerModule.getLoginToken("Devano", "11kingie");
+    await messengerModule.denyContactRequest("02899e8b-cc11-4a3a-8d07-5e05a8ab4f5b").then(reponse=>{
+      console.log(reponse);
+    }).catch(error=>{
+      console.log(error);
+    });
+    
+  });
+
+
   

@@ -24,6 +24,23 @@ export default class UserModel {
             this.areActiveContact =  false;
         }
     }
+    acceptRequest(){
+        if (this.areActiveContact === false){
+            this.store.requestAcceptHandlier(this);
+        }
+        else {
+            //more feats maybe error handling
+        }
+    }
+    rejectRequest(){
+        if (this.areActiveContact === false){
+            this.store.requestDenyHandlier(this);
+            
+        }
+        else {
+            //more feats maybe error handling
+        }
+    }
     setUserActive() {
         if (this.store){
             this.store.setActiveContact(this);

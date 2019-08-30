@@ -11,6 +11,8 @@ from django.contrib.auth import get_user_model
 from .serializers import UserBasicSerializers as UserSerializer
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import login
+from .models import contactList
+import uuid
 ##rest_log_in_view
 
 
@@ -84,6 +86,61 @@ class UserInfoViewSet(viewsets.ViewSet,StandardResultsSetPagination):
         #queryset_paginated= self.paginate_queryset(queryset,request)
         serializer = UserSerializer(queryset , many=True)
         return Response(serializer.data)
+
+class ActiveContactsViewSet(viewsets.ViewSet,StandardResultsSetPagination):
+    "Viwset For Modifying  Active Contacts"
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    USER_MODEL = get_user_model()
+    permission_classes = [IsAuthenticated]
+    def list(self,request):
+        queryset = request.user.get_active_contacts()
+        #queryset_paginated= self.paginate_queryset(queryset,request)
+        serializer =  UserSerializer(queryset , many=True)
+        return Response(serializer.data)
+
+class PendingContactsViewSet(viewsets.ViewSet,StandardResultsSetPagination):
+    "Viwset For Modifying  Pending Contacts"
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    USER_MODEL = get_user_model()
+    permission_classes = [IsAuthenticated]
+    #list all Pending Contact
+    def list(self,request):
+        queryset = request.user.get_pending_contacts()
+        #queryset_paginated= self.paginate_queryset(queryset,request)
+        serializer = UserSerializer(queryset , many=True)
+        return Response(serializer.data)
+    #Update A Pending Contact 
+    def create(self, request):
+        pass
+    def update(self, request, pk=None):
+        if  pk:
+            try:
+                pendingUser = self.USER_MODEL.objects.get(uuid=str(pk))
+                contactInst = contactList.objects.get(friend_ship_initiator=pendingUser,friend=request.user)
+                contactInst.active_contact = True
+                contactInst.save()
+                return Response(pk,status=status.HTTP_200_OK)
+
+            except Exception as e:
+                print(e)
+                return Response("User Not Found", status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response("No Pending User Given", status=status.HTTP_400_BAD_REQUEST)
+    def destroy(self, request, pk=None):
+        
+        if  pk:
+            try:
+                pendingUser = self.USER_MODEL.objects.get(uuid=pk)
+                contactInst = contactList.objects.get(friend_ship_initiator=pendingUser,friend=request.user)
+                contactInst.delete()
+                return Response("User Contact Deleted=True", status=status.HTTP_200_OK)
+
+            except Exception as e:
+                print(e)
+                return Response(pk, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response("No Pending User Given", status=status.HTTP_400_BAD_REQUEST)
+        
     
 
     

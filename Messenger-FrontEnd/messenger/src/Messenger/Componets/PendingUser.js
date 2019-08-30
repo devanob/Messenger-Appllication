@@ -7,10 +7,11 @@ class PendingUser extends Component{
     super(props)
     
   }   
-  setActive= ()=>{
-    //console.log("componet");
-    //console.log(this.props.user);
-    //this.props.user.setUserActive();
+  acceptRequest= (user)=>{
+    user.acceptRequest();
+  }
+  denyRequest= (user)=>{
+    user.rejectRequest();
   }
   render() {
     const {user=null} = this.props;
@@ -23,7 +24,19 @@ class PendingUser extends Component{
         </div>
         <div className="contact-info">
           <h3>{user.username}</h3>
-          <p></p>
+         
+        </div>
+        <div className="pending-user-control">
+          <div className="add-contact">
+            <button onClick= {()=>{
+                this.acceptRequest(user);
+            }}>Add</button>
+          </div>
+          <div className="reject-contact">
+            <button onClick= {()=>{
+                this.denyRequest(user);
+            }}>Reject</button>
+          </div>
         </div>
         
       </a>

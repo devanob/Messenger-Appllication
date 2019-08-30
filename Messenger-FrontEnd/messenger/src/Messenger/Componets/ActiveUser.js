@@ -22,8 +22,15 @@ class ActiveUser extends Component {
                     </div > 
                     <div className = "contact-info" >
                         <h3> { user.username } </h3> 
-                        <p> </p> 
                     </div >
+                    <div className="active-user-status">
+                        <div className="online">
+                            <button>Online</button>
+                        </div>
+                        <div className="offline">
+                            <button>Offline</button>
+                        </div>
+                    </div>
                 </a> 
             </li >
         );

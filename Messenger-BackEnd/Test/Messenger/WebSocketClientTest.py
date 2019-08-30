@@ -6,7 +6,7 @@ from essential_generators import DocumentGenerator
 gen = DocumentGenerator()
 user = User.objects.get(username="Devano")
 user_uuid= str(user.uuid)
-generate_num = 1000
+generate_num = 5000
 user_list = list(User.objects.all())
 import random
 

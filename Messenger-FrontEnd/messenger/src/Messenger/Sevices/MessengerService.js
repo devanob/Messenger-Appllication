@@ -15,6 +15,7 @@ class MessengerService {
     isLoggin = false;
     authToken = null;
     eventListener = {};
+    base_url = ""
     constructor(){
         this.headersList = {
             headers:{"Content-Type": 'application/json'},
@@ -202,6 +203,36 @@ class MessengerService {
         
     }
 
+    acceptContactRequest(user_uuid){
+        let putRequest = `http://127.0.0.1:8000/api/pending-contacts/${user_uuid}/`
+        return axios.put(putRequest,{},this.headersList ).then(response=>{
+            ///if the resource was modified then return the user data
+            if (response.status === 200){
+                return response.data;
+            }
+            //else return a false;
+            else {
+                return false;
+            }
+        });
+    }
+
+    denyContactRequest(user_uuid){
+        console.log(user_uuid);
+        console.log(this.headersList);
+        let putRequest = `http://127.0.0.1:8000/api/pending-contacts/${user_uuid}/`
+        return axios.delete(putRequest,this.headersList ).then(response=>{
+            ///if the resource was modified then return the user data
+            if (response.status === 200){
+                return response.data;
+            }
+            //else return a false;
+            else {
+                return false;
+            }
+        });
+    }
+
 
    
     // initAPI(){
@@ -216,7 +247,6 @@ class MessengerService {
 
 
 decorate(MessengerService, {
-    webSocketisConnected : observable,
     isLoggin :observable,
     webSocketisConnected : observable, 
     setConnectedWebSocketFlag: action,

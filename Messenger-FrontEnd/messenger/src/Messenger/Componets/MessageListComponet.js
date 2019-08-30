@@ -11,7 +11,6 @@ class MessageListComponet extends Component{
   }   
   componentDidUpdate(){
     this.ulRef.current.scrollTop =  this.ulRef.current.scrollHeight;
-    console.log( this.ulRef.current.scrollHeight);
     
     
   }

@@ -16,13 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include, url
-from .api import AuthenticationUser,UserInfoViewSet
+from .api import AuthenticationUser,UserInfoViewSet, ActiveContactsViewSet,PendingContactsViewSet
 from rest_framework import routers
 router = routers.DefaultRouter()
 
 router.register(r'auth', AuthenticationUser, basename="auth")
 router.register(r'users', UserInfoViewSet, basename="users")
-
+router.register(r'active-contacts', ActiveContactsViewSet, basename="active-users")
+router.register(r'pending-contacts', PendingContactsViewSet, basename="pending-users")
 
 urlpatterns = [
     path(r'api/', include(router.urls)),

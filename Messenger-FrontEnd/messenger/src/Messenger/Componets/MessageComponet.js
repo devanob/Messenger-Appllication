@@ -11,14 +11,14 @@ class MessageComponet extends Component{
   render() {
     const { rootStore} = this.props;
     let activeUser = rootStore.userStore.currentActiveUser;
-    let messages = rootStore.userMessageStore.getMessages
+    let messages = rootStore.userMessageStore.getMessagesActiveUser
     let  objectToRender = null;
     if (activeUser == null ){
         objectToRender = <div>No Active User Click On One</div>
     }
     else {
         let uuidUser = activeUser.uuid;
-        let userModelMessages = messages[uuidUser];
+        let userModelMessages = messages;
         if (userModelMessages === null){
             objectToRender = <div> Still Loading MEssages </div>
         }

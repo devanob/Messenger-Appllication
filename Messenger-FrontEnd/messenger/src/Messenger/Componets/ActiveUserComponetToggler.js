@@ -9,13 +9,13 @@ function ActiveUserComponetToggler(props) {
     return (
       <div className="users-type-toggler">
         <ul className="users-type-toggler-list">
-            <li>
+            <li className="item-type">
                 <button  onClick ={()=>stateChangeHandler("ACTIVECONTACTS")}>Active User</button>
-            </li>
-            <li> 
+            </li >
+            <li className="item-type"> 
                 <button  onClick ={()=>stateChangeHandler("PENDNGCONTACT")}>Pending User</button>
             </li>
-            <li>
+            <li className="item-type">
                 <button  onClick ={()=>stateChangeHandler("SEARCHUSER")}>Search Users</button>
             </li>
         </ul>

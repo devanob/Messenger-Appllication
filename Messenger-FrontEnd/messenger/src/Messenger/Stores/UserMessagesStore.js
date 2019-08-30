@@ -46,14 +46,15 @@ class UserMessageStore{
     receiveMessage = (event)=>{
         let to_UserModel = this.userMesagesModels[event.to_User];
         let from_UserModel = this.userMesagesModels[event.from_User]
+        console.log(this.userMesagesModels);
         if (to_UserModel !== null & typeof to_UserModel !== "undefined"){
             to_UserModel.addMessage(event);
         }
-        if (from_UserModel !== null & typeof from_UserModel !== "undefined"){
+        else if (from_UserModel !== null & typeof from_UserModel !== "undefined"){
             from_UserModel.addMessage(event);
         }
         else {
-            console.log("Not A Contact")
+           
         }
     }
     //sends the current message 
@@ -66,7 +67,11 @@ class UserMessageStore{
             & this.contructedMessageInternelMessage.trim().length > 0 ){
             let messageJson = this.constructMessageToSend() 
             console.log(messageJson);
-            this.transporLayer.sendMessageWebSocket(messageJson);
+            this.transporLayer.sendMessageWebSocket(messageJson).then(status=>{
+                this.setMessageText("");
+            }).catch(error=>{
+
+            });
 
         }
         //seems they are not in sync time to fix that 
@@ -86,11 +91,38 @@ class UserMessageStore{
     get contructedMessageInternelMessage(){
         return this.contructedMessage.message;
     }
+    ///get the message for the current active user
+    
+    get getMessagesActiveUser(){
+        if (this.contructedMessage.toUser){
+            let activerUser = this.contructedMessage.toUser;
+            if (activerUser.uuid in this.userMesagesModels){
+                return this.userMesagesModels[activerUser.uuid];
+            }
+            else {
+                this.setContactSingle(activerUser)
+                return this.userMesagesModels[activerUser.uuid];
+            }
+        }
+        else {
+            console.log("no active User");
+            return null;
+        }
+    }
     setMessageText(textMessage){
         this.contructedMessage.message = textMessage
     }
     setMessageUser(currentActiveUser){
         this.contructedMessage.toUser = currentActiveUser;
+    }
+
+    setContactSingle(userContact){
+        if (!(userContact.uuid in this.userMesagesModels)){
+            let userUUID = userContact.uuid;
+            this.userMesagesModels[userUUID] = new MessagesModel(this,userContact);
+        }
+        //might need to make a query to get your messages 
+         
     }
     setContactUsers(listContactUser){
         return new Promise((resolve, reject)=>{
@@ -149,7 +181,9 @@ decorate(UserMessageStore, {
     setMessageText : action,
     contructedMessageInternelMessage : computed,
     setMessageUser: action,
-    sendMessage : action
+    sendMessage : action,
+    getMessagesActiveUser: computed,
+    setContactSingle: action
 
 })
 

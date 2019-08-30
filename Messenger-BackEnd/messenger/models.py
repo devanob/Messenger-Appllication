@@ -36,7 +36,9 @@ class Messages(models.Model):
     #     settings.AUTH_USER_MODEL,
     #     on_delete=models.CASCADE, related_name="receiver_contact", 
     # )
-
+    def __str__(self):
+        return "Message From: {} To: {} Message: {} ConvoID: {} ". \
+        format(self.from_User, self.to_User, self.message, self.direct_conversation_id)
     class Meta:
         #ordering = ('-direct_conversation_id',)
         db_table = "Messages"

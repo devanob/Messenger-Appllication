@@ -6,7 +6,11 @@ import Search  from "./Search"
 import ActiveUsers from "./ActiveUsers"
 import PendingUsers from "./PendingUsers"
 import ActiveUserComponetToggler from "./ActiveUserComponetToggler"
-
+//  import css styling 
+import "../css/ActiveUser.css"
+import "../css/PendingUser.css"
+import "../css/Search.css"
+import "../css/Toggler.css"
 //Manages The Most Top Layer Of The Side Bar U.I
 class SideBar extends Component{
   constructor(props){

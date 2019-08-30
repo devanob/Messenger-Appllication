@@ -48,6 +48,32 @@ export default class UserStore {
     get getIsLoadingPending(){
         return this.isLoadingPendingContactsFlag;
     }
+    //set user object using model rather than a json object
+    setUserModel(modelObject, isActive=true){
+        if (isActive === true){
+            let foundUser = this.activeContacts.find((element)=>{
+                return element.uuid === modelObject.uuid;
+            })
+            if (foundUser != null){
+                foundUser.upDate(modelObject);
+            }
+            else {
+                this.activeContacts.push(modelObject);
+            }
+            
+        }
+        else {
+            let foundUser = this.pendingContacts.find((element)=>{
+                return element.uuid === modelObject.uuid;
+            })
+            if (foundUser != null){
+                foundUser.upDate(modelObject);
+            }
+            else {
+                this.pendingContacts.push(modelObject);
+            }
+        }
+    }
 
     setUser(user, isActive=true){
         if (isActive === true){
@@ -158,6 +184,43 @@ export default class UserStore {
             
         }
     }
+
+    requestAcceptHandlier(userModel){
+        this.transporLayer.acceptContactRequest(userModel.uuid).then(action(response=>{
+            //if the request was accepted Contact made active
+            if (response){
+                //splice  from pending here
+                userModel.areActiveContact=true;
+                let modifiledPending= this.pendingContacts.filter(element=>{
+                    return element.uuid !== userModel.uuid;
+                });
+                this.pendingContacts.replace(modifiledPending);
+                this.setUserModel(userModel, userModel.areActiveContact);
+            }
+            else {
+
+            }
+        })
+        )
+    }
+    //Accept A Model To Accepted Into The Active List Of Contacts
+    //Handles Accepting Of Contact Request
+    requestDenyHandlier(userModel){
+        this.transporLayer.denyContactRequest(userModel.uuid).then(action(response=>{
+            //if the request was accepted Contact made active
+            if (response){
+                //splice  from pending here
+                let modifiledPending= this.pendingContacts.filter(element=>{
+                    return element.uuid !== userModel.uuid;
+                });
+                this.pendingContacts.replace(modifiledPending);
+            }
+            else {
+
+            }
+        })
+        )
+    }
     
     generateActiveUserList() {
        let newUsersActives = this.activeContacts.filter(item=>{
@@ -203,5 +266,7 @@ decorate(UserStore , {
     loadingActiveError: observable,
     loadingPendingError: observable,
     listPendingContacts: computed, 
-    currentActiveUser:observable
+    currentActiveUser:observable,
+    requestAcceptHandlier : action,
+    requestDenyHandlier: action
 })
