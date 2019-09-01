@@ -46,7 +46,7 @@ class AuthenticationUser(viewsets.ViewSet):
 from rest_framework.pagination import PageNumberPagination
 #Pagination Class 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 3
+    page_size = 25
     page_size_query_param = 'page_size'
     max_page_size = 100
 
@@ -56,9 +56,12 @@ class UserInfoViewSet(viewsets.ViewSet,StandardResultsSetPagination):
     USER_MODEL = get_user_model()
     permission_classes = [IsAuthenticated]
     def list(self,request):
-        search = self.request.query_params.get('user-name', None)
-        #print(search)
-        queryset = self.USER_MODEL.objects.all().order_by('-username')
+        search = self.request.query_params.get('search', None)
+        queryset = None
+        if search:
+            queryset = self.USER_MODEL.objects.filter(username__icontains=search)
+        else:
+            queryset = self.USER_MODEL.objects.all().order_by('-username')
         queryset_paginated= self.paginate_queryset(queryset,request)
         serializer =  UserSerializer(queryset_paginated, many=True)
         return self.get_paginated_response(serializer.data)

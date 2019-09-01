@@ -15,7 +15,7 @@ from django.db.models import Q
 
 
 class UserMessages(viewsets.ViewSet):
-    item_per_group = 50
+    item_per_group = 50  
     "Retrieve Messages API User Authentication Required"
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]

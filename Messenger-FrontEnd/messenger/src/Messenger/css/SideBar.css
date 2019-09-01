@@ -41,7 +41,7 @@
 
    @media (min-width: 991) { 
     .sidebar.active{
-      width:25vw;
+      width:30vw;
       padding: 0.5;
       visibility: visible;
     }
@@ -50,7 +50,7 @@
   /* // Large devices (desktops, 62em and up) */
   @media (min-width: 1200px) { 
     .sidebar.active{
-      width:25vw;
+      width:30vw;
       padding: 0.5;
       visibility: visible;
     }

@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import { observer,inject } from "mobx-react"
 import ActiveUser from "./ActiveUser"
+import Spinner from 'react-bootstrap/Spinner';
+import SpinnerComponet from "../SpinnerComponet";
 
 //Manages UI Active Users Displayed To The User
 class ActiveUsers extends Component{
@@ -31,8 +33,15 @@ class ActiveUsers extends Component{
               })).map(user=>{
                 
                   return (
-                      <ActiveUser  key={user.uuid} user={user}/>
-                  )
+                    
+                    // {/* <Spinner animation="border" role="status">
+                    //   <span className="sr-only">Loading...</span>
+                    // </Spinner>
+                    // </> */}
+
+                    <ActiveUser  key={user.uuid} user={user}></ActiveUser>
+                   
+                  );
               })}
           </ul>
       </div>
@@ -40,7 +49,7 @@ class ActiveUsers extends Component{
     }
     else {
       return (
-        <div className="activeUsers">Loading..........</div>
+        <SpinnerComponet></SpinnerComponet>
       );
     }
   }

@@ -61,5 +61,16 @@ it("Testing Messenger Service-Login Token", async () => {
     
   });
 
+  it("Testing Messenger Service-Search Users", async () => {
+    let messengerModule = new MessengerService();
+    await messengerModule.getLoginToken("Devano", "11kingie");
+    await messengerModule.searchUsers("").then(reponse=>{
+      console.log(reponse);
+    }).catch(error=>{
+      console.log(error);
+    });
+    
+  });
+
 
   

@@ -5,7 +5,7 @@ configure({ enforceActions: 'observed' })
 //Model The Users Contacts And Potential Contacts
 
 /**
- * This Class Acts As A Store For SideBar UI state 
+ * This Class Acts As A Store For SideBar UI state
  */
 
 //UI Store Storeses Various States Of THe UI From Side Bar To Main Content
@@ -19,9 +19,10 @@ class UIUserStore {
     isActive = true;
     store = null
     /**
-     * 
+     *
      * @param {*} store -The Root Store Of The UI-also allow certain depeencies to be injected
      */
+    searchString = "";
     constructor(store=null){
         this.store = store;
     }
@@ -31,10 +32,18 @@ class UIUserStore {
     get getIsActive(){
         return this.isActive;
     }
+    get getSearchString(){
+        return this.searchString;
+    }
+    setsearchString(txt){
+        
+        this.searchString = txt;
+    }
 
     toggleSideBarActive(){
         this.isActive = !this.isActive;
     }
+
 
     setActiveElement(stateString){
         if (this.viableStates.includes(stateString)){
@@ -45,17 +54,20 @@ class UIUserStore {
             throw new Error("State Change Not Valid");
         }
     }
-    
+
 }
 
-decorate(UIUserStore, 
+decorate(UIUserStore,
     {
-    activeElement: observable, 
-    isActive: observable, 
+    activeElement: observable,
+    isActive: observable,
     getActiveElement: computed,
     getIsActive : computed,
     toggleSideBarActive: action,
-    setActiveElement: action
+    setActiveElement: action,
+    searchString: observable,
+    getSearchString : computed,
+    setsearchString : action 
     }
 )
 

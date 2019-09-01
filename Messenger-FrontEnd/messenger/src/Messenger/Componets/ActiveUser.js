@@ -21,7 +21,7 @@ class ActiveUser extends Component {
                         <img src = "https://via.placeholder.com/500" alt = { `user-profile ${user.username}` }/>  
                     </div > 
                     <div className = "contact-info" >
-                        <h3> { user.username } </h3> 
+                        <div> { user.username } </div> 
                     </div >
                     <div className="active-user-status">
                         <div className="online">

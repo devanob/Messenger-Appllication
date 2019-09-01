@@ -1,5 +1,6 @@
 import UserModel from "../Models/UserModel"
-import { observable, computed, action, decorate, configure} from "mobx";
+import { observable, computed, action, decorate, configure, when} from "mobx";
+import SearchUserStore from './SearchUserStore';
 
 configure({ enforceActions: 'observed' })
 //IMPORTS
@@ -17,9 +18,27 @@ export default class UserStore {
     loadingActiveError= false;
     loadingPendingError= false;
     transporLayer = null;
-    constructor(store=null,transporLayer=null){
+    constructor(store=null,transporLayer=null,uiStore=null){
         this.store = store;
         this.transporLayer = transporLayer;
+        this.uiSideBarStore = new SearchUserStore(this,this.transporLayer,uiStore);
+        when(
+            ()=>{
+                
+                return this.transporLayer.isLoggedIn;
+                
+            }, 
+            (isLoggedIn)=>{
+                //if the user is logged in then 
+                
+                    console.log("loaddata");
+                    this.asyncLoadData().then(code=>{
+                        console.log(code);
+                    }).catch(error=>{
+                        console.log(error);
+                    })
+               
+            })
         //this.loadContacts();ls   
     }
     //Load contacts active and pending from the server using the transport layer
@@ -29,8 +48,15 @@ export default class UserStore {
         this.loadPendingContacts();
     }
     async asyncLoadData(){
-        await this.loadContacts();
-        await this.loadPendingContacts();
+        try{
+            await this.loadContacts();
+            await this.loadPendingContacts();
+            return true
+        }
+        catch(error){
+            return false;
+        }
+        
     }
     //set loading flags 
     setLoadingActive(bool){
@@ -47,6 +73,14 @@ export default class UserStore {
 
     get getIsLoadingPending(){
         return this.isLoadingPendingContactsFlag;
+    }
+    //return if there was an error loading  active contacts
+    get getLoadingActiveError(){
+        return this.loadingActiveError;
+    }
+    //return if there was an error loading  active contacts
+    get getLoadingPendingError(){
+        return this.loadingPendingError;
     }
     //set user object using model rather than a json object
     setUserModel(modelObject, isActive=true){
@@ -268,5 +302,9 @@ decorate(UserStore , {
     listPendingContacts: computed, 
     currentActiveUser:observable,
     requestAcceptHandlier : action,
-    requestDenyHandlier: action
+    requestDenyHandlier: action,
+    getLoadingActiveError : computed,
+    getLoadingPendingError: computed,
+    getIsLoadingPending : computed,
+    getIsLoadingActive: computed
 })

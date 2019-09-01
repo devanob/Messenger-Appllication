@@ -27,8 +27,8 @@ class MessengerConsumer(AsyncJsonWebsocketConsumer):
                 self.group_name,self.channel_name
             )
             await self.accept()
-            self.connected = True
-            asyncio.ensure_future(self.checkActive())
+            # self.connected = True
+            # asyncio.ensure_future(self.checkActive())
         else:
             print("user rejected")
             await self.close("User Is Not Authenicated")

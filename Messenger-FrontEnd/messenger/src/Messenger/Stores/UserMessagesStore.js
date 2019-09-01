@@ -1,7 +1,7 @@
 import MessagesModel from "../Models/MessagesModel"
 import { observable, computed,
         action, decorate, 
-        configure, reaction} from "mobx";
+        configure, reaction, when} from "mobx";
 
 configure({ enforceActions: 'observed' })
 //IMPORTS
@@ -17,14 +17,17 @@ class UserMessageStore{
     isLoadingMesagesFlag= true // if loading messages from server and setting up
     loadingMessagesError= false; // error loading messages
     transporLayer = null;
+    userStore=null
     //This is the message with user that will be sent over websocket
     contructedMessage = {toUser: null , message : ""};
-    constructor(store=null,transporLayer=null){
+    constructor(store=null,transporLayer=null, userStore=null){
         this.store = store;
         this.transporLayer = transporLayer;
+        this.userStore = userStore;
         if (this.store != null){
             //react to active user changes 
             //reset message content
+            // reaction to ActiveUSer
             reaction ( 
                 ()=>{
                     return this.store.userStore.currentActiveUser;
@@ -40,6 +43,24 @@ class UserMessageStore{
                     "message",this.receiveMessage
                     )
             }
+        }
+        ///if we got a valid userstore
+        // getLoadingActiveError : computed,
+        if (this.userStore != null ){
+            when(
+                ()=>{
+                    
+                    return !this.userStore.getLoadingActiveError && !this.userStore.getIsLoadingActive;
+                }, 
+                ()=>{
+                    this.setContactUsers(this.userStore.listActiveContacts).then(status=>{
+                        if (status === true){
+                            this.loadMessages();
+                        }
+                    })
+                }
+            
+            )
         }
         
     }

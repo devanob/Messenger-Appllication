@@ -232,6 +232,12 @@ class MessengerService {
             }
         });
     }
+    searchUsers(querySearch){
+        return axios.get(`http://127.0.0.1:8000/api/users/?search=${querySearch}`, this.headersList).
+            then(response=>{
+                return response.data;
+        })
+    }
 
 
    
@@ -252,7 +258,7 @@ decorate(MessengerService, {
     setConnectedWebSocketFlag: action,
     setLoggedIn: action,
     setWebSocketError: action,
-    isLoggedIn: computed
+    isLoggedIn: computed,
 
 })
 export default MessengerService

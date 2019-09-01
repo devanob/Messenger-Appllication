@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { observer,inject } from "mobx-react"
 import PendingUser from "./PendingUser"
-
+import SpinnerComponet from "../SpinnerComponet";
 //Manages A List Of Pending Users Instances
 class PendingUsers extends Component{
   constructor(props){
@@ -39,7 +39,7 @@ class PendingUsers extends Component{
     }
     else {
       return (
-        <div className="pendingUsers">Loading..........</div>
+        <SpinnerComponet></SpinnerComponet>
       );
     }
   }

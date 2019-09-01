@@ -14,9 +14,9 @@ export default class RootStore {
     uiSideBarStore = null;
     constructor(store=null, userNamePassword=null){
         this.transportLayer = new MessengerService();
-        this.userStore = new UserStore(this,this.transportLayer);
         this.uiUserStore = new UIUserStore(this);
-        this.userMessageStore = new UserMessageStore(this,this.transportLayer)
+        this.userStore = new UserStore(this,this.transportLayer, this.uiUserStore );
+        this.userMessageStore = new UserMessageStore(this,this.transportLayer,this.userStore);
         this.startAsyncServices().then((num)=>{
         }).catch(error=>{
             console.log(error);
@@ -25,9 +25,9 @@ export default class RootStore {
     //Start Async Services That are need as soon a 
     async startAsyncServices(){
         await this.transportLayer.getLoginToken("Devano", "11kingie");
-        await this.userStore.asyncLoadData();
-        await this.userMessageStore.setContactUsers(this.userStore.listActiveContacts)
-        await this.userMessageStore.loadMessages();
+        //await this.userStore.asyncLoadData();
+        //await this.userMessageStore.setContactUsers(this.userStore.listActiveContacts)
+        //await this.userMessageStore.loadMessages();
         return true;
     }
 }

@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 //Provides Search Functionality Throught TextInput Send Text Event To Handlier(Parent-)
 class Search extends Component{
     constructor(props){
@@ -9,6 +10,7 @@ class Search extends Component{
     render() {
       const {value=null, onChange=null, children=null} = this.props;
       return (
+       
         <div className="search-users">
             <form>
                 {children}<input
@@ -17,7 +19,14 @@ class Search extends Component{
                 onChange = {onChange}
                 />
             </form>
+            <div className="search-button-container">
+              <div className="searchButton">
+                <FontAwesomeIcon icon={faSearch} />
+              </div>
+            </div>
         </div>
+        
+        
   
       );
     }

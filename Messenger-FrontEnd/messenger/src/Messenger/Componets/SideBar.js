@@ -11,6 +11,7 @@ import "../css/ActiveUser.css"
 import "../css/PendingUser.css"
 import "../css/Search.css"
 import "../css/Toggler.css"
+import "../css/LoadingSpinner.css"
 //Manages The Most Top Layer Of The Side Bar U.I
 class SideBar extends Component{
   constructor(props){
@@ -27,11 +28,13 @@ class SideBar extends Component{
   }
   //Handles Text Change in child componet Search 
   setSearchText = (event)=>{
+    //set local state
     this.setState(
         {
           searchText : event.target.value 
         }
       )
+      this.props.rootStore.uiUserStore.setsearchString(event.target.value );
   } 
   //Set which Ui Componet Should Be Rendered
   setUserUiState =(state)=>{

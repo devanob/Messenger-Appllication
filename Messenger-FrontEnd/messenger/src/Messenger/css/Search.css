@@ -5,6 +5,11 @@
     height: 10%;
     width: 100%;
     background-color: purple;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    
 }
 
 .search-users form input {
@@ -14,11 +19,12 @@
   border-radius: 0;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
-  width: 50%;
+  width: 98%;
   padding: 0;
   margin: 0;
   border: 0;
-  padding: 1em;
+  padding-top: 1em;
+  padding-bottom: 1em;
   border-radius: 1em;
 
 }
@@ -27,7 +33,36 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  flex-grow: 1;
   height: 100%;
+  padding-left: 0.3em;
   
+}
+.search-users .search-button-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  height: 100%;
+
+}
+.searchButton{
+    content : "";
+    padding: 0.3em;
+    border-width: 2px;
+    border-style: solid;
+    border-color: white;
+    border-radius: 50%;
+    color:white;
+    font-size:1.5em;
+    transition: all 5.5s color ease;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+
+.searchButton:hover{
+  color:rgba(0, 255, 55, 0.534);
 }
