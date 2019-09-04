@@ -1,0 +1,160 @@
+ /* Active User
+--------------------------------*/
+.searchUsers{
+    height: 75%;
+    width: 100;
+    /* background-color: palegreen; */
+  }
+  
+  .searchUsers .users > li:first-child *  {
+    /* background-color: red; */
+  }
+  .searchUsers .users li{
+    background-color: #f6f6f6;
+    border-color: #ddd;
+    color: #333;
+    text-shadow: 0 1px 0 #f3f3f3;
+    border-top-left-radius: 0.1em;
+    border-width: 1px 0 0;
+    border-style: solid;
+    overflow: visible;
+    width: 100%;
+    
+  }
+  
+  .searchUsers .users li > a{
+    display: flex;
+    flex-direction: row;
+    background-color: #f6f6f6;
+    border-color: #ddd;
+    color: #333;
+    height: 100%;
+    text-shadow: 0 1px 0 #f3f3f3;
+    border-top-left-radius: 0.1em;
+    border-width: 5px 0 0;
+    text-decoration: none;
+    height: auto;
+  
+  
+   
+  }
+  
+  .searchUsers .users li > a:hover{
+    background-color: #ededed;
+    border-color: #ddd;
+    color: #333;
+    text-shadow: 0 1px 0 #f3f3f3;
+  }
+  
+  .searchUsers .users .profile-img{
+    width: 25%;
+    /* border-radius: 50%; */
+    overflow: hidden;
+    padding: 0.5em 0 0.5em 0;
+    margin-left: 0.5em;
+    
+  }
+  
+  .searchUsers .users .contact-info{
+    width: 50%;
+  
+  }
+  
+  .searchUsers  .users .contact-info div {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-left: 0.3em;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    width: 100%;
+    font-size: 1.1em;
+    font-weight: 600;
+    
+  }
+  
+  .profile-img img {
+    width: 100%;
+    height:100%;
+    object-fit : cover;
+    border-radius: 100%;
+    border-width: 0.5px;
+    border-color: rgb(112, 111, 111);
+    border-style : solid;
+  }
+  
+  .searchUsers ul {
+    width: 100%;
+    height: 100%;
+    list-style-type: none;
+    padding: 0%;
+    margin: 0%;
+    overflow-y : scroll;
+  }
+  .searchUsers ul>:first-child{
+      background-color: blue;
+  }
+
+
+  /* //Online Status  */
+  /* //Reject Add Pending User */
+  .active-user-status{
+    position: relative;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  
+.searchUsers  .add-user-container{
+    flex-grow: 1;
+    position: relative;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    display: flex;
+    align-items: center
+
+}
+
+.searchUsers  .add-user-container .add-contact{
+    height: 50%;
+    width: 100%;
+    margin-right: 1em;
+}
+  
+.add-user-container button {
+      
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: Arial;
+        text-decoration: none;
+        text-shadow: 0px 1px 0px #2f6627;
+        background-color:#5cbf2a;
+        border: 1px solid #5cbf2a;
+        content :"";
+        width: 100%;
+        position: absolute;
+        right: 0.4em;
+  }
+.add-user-container .add-contact button:hover {
+    background-color:#5cbf2ad3;
+}
+
+.load-more-contacts{
+    color: white;
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+    background: lightgreen;
+    font-size: 1.5em;
+}
+
+.load-more-contacts:hover{
+    background: rgba(144, 238, 144, 0.712);
+}
+

@@ -1,17 +1,19 @@
 import React, {Component} from "react";
 import { observer,inject } from "mobx-react"
 import "../css/SideBar.css"
-import Toggler from "./Toggler"
-import Search  from "./Search"
-import ActiveUsers from "./ActiveUsers"
-import PendingUsers from "./PendingUsers"
-import ActiveUserComponetToggler from "./ActiveUserComponetToggler"
+import Toggler from "./TogglerComponet/Toggler"
+import Search  from "./Search/Search"
+import ActiveUsers from "./ActiveUsers/ActiveUsers"
+import PendingUsers from "./PendingUsers/PendingUsers"
+import ActiveUserComponetToggler from "./ActiveUserToggler/ActiveUserComponetToggler"
 //  import css styling 
 import "../css/ActiveUser.css"
 import "../css/PendingUser.css"
 import "../css/Search.css"
 import "../css/Toggler.css"
 import "../css/LoadingSpinner.css"
+import "../css/SearchedUser.css"
+import SearchedUsersComponet from "./SearchUsers/SearchedUsersComponet";
 //Manages The Most Top Layer Of The Side Bar U.I
 class SideBar extends Component{
   constructor(props){
@@ -28,34 +30,43 @@ class SideBar extends Component{
   }
   //Handles Text Change in child componet Search 
   setSearchText = (event)=>{
-    //set local state
-    this.setState(
-        {
-          searchText : event.target.value 
-        }
-      )
-      this.props.rootStore.uiUserStore.setsearchString(event.target.value );
-  } 
+    this.props.rootStore.uiUserStore.setsearchString(event.target.value);
+    
+      
+  }
+  searchForUser=()=>{
+    this.props.rootStore.userStore.getSearchUserStore.searchForUsers();
+  }
   //Set which Ui Componet Should Be Rendered
   setUserUiState =(state)=>{
     this.props.rootStore.uiUserStore.setActiveElement(state);
+    
+      
+    
   }
   //Render Componet
   render() {
     const {/*children,*/ rootStore} = this.props;
-    let userStateUI = rootStore.uiUserStore.getActiveElement;
+    const userStateUI = rootStore.uiUserStore.getActiveElement;
+    const viableStates = rootStore.uiUserStore.getViableStates;
+    const searchString = this.props.rootStore.uiUserStore.getSearchString;
     let toRender = null;
     if (userStateUI ===  "ACTIVECONTACTS" ){
-      toRender = ( <ActiveUsers searchText={this.state.searchText}/>);
+      toRender = ( <ActiveUsers searchText={searchString }/>);
     }
-    else if (userStateUI ===  "PENDNGCONTACT"){
-      toRender = ( <PendingUsers searchText={this.state.searchText}/>);
+    else if (userStateUI ===  "PENDINGCONTACTS"){
+      toRender = ( <PendingUsers searchText={searchString}/>);
+    }
+    else if (userStateUI ===  "SEARCHPENDING"){
+      //toRender = ( <PendingUsers searchText={this.state.searchText}/>);
+      toRender = (<SearchedUsersComponet searchUserStore={rootStore.userStore.getSearchUserStore}  
+                  searchText={searchString}/>)
     }
     return (
-      <div className={`sidebar ${rootStore.uiUserStore.getIsActive? "active": ""}`}>
+      <div className={`sidebar ${rootStore.uiUserStore.getIsActive? "active" : ""}`}>
         <Toggler onClickHandlier={this.toggleActiveSideBar}/>
-        <ActiveUserComponetToggler stateChangeHandler={this.setUserUiState}/>
-        <Search value={this.state.searchText} onChange={this.setSearchText} children={null}/>
+        <ActiveUserComponetToggler viableStates={viableStates} stateChangeHandler={this.setUserUiState}/>
+        <Search searchHandlier={this.searchForUser} value={searchString} onChange={this.setSearchText} children={null}/>
         {toRender}
         
 

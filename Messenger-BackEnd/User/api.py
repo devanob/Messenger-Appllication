@@ -12,6 +12,7 @@ from .serializers import UserBasicSerializers as UserSerializer
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import login
 from .models import contactList
+from django.db import transaction
 import uuid
 ##rest_log_in_view
 
@@ -29,8 +30,7 @@ class AuthenticationUser(viewsets.ViewSet):
         if form.is_valid():
             user = form.get_user()
             token, created = Token.objects.get_or_create(user=user)
-            if "session-login" in request.data:
-                login(request,user)
+            login(request,user)
             if created:
                 token.save()
             return Response({"token": token.key, "username": user.username}, status=status.HTTP_201_CREATED)
@@ -57,9 +57,14 @@ class UserInfoViewSet(viewsets.ViewSet,StandardResultsSetPagination):
     permission_classes = [IsAuthenticated]
     def list(self,request):
         search = self.request.query_params.get('search', None)
+        your_contacts = request.user.get_active_contacts()
+        print(your_contacts.query)
         queryset = None
         if search:
-            queryset = self.USER_MODEL.objects.filter(username__icontains=search)
+            queryset = self.USER_MODEL.objects \
+            .filter(username__icontains=search).exclude(uuid=request.user.uuid) \
+            #  .exclude(username__in=your_contacts)
+            print(queryset.query)
         else:
             queryset = self.USER_MODEL.objects.all().order_by('-username')
         queryset_paginated= self.paginate_queryset(queryset,request)
@@ -112,9 +117,18 @@ class PendingContactsViewSet(viewsets.ViewSet,StandardResultsSetPagination):
         #queryset_paginated= self.paginate_queryset(queryset,request)
         serializer = UserSerializer(queryset , many=True)
         return Response(serializer.data)
-    #Update A Pending Contact 
-    def create(self, request):
-        pass
+    #create  A Pending Contact 
+    def create(self, request): 
+        from django.db import connection
+        user = request.user
+        with transaction.atomic():
+            contact=contactList(friend_ship_initiator=request.user,\
+            friend=self.USER_MODEL.objects.get(uuid=request.data["uuid"]))
+            try:
+                contact.save()
+            except Exception as e:
+                return Response("contact-exists", status=status.HTTP_208_ALREADY_REPORTED)      
+        return Response("contact-created", status=status.HTTP_201_CREATED)
     def update(self, request, pk=None):
         if  pk:
             try:
@@ -125,8 +139,7 @@ class PendingContactsViewSet(viewsets.ViewSet,StandardResultsSetPagination):
                 return Response(pk,status=status.HTTP_200_OK)
 
             except Exception as e:
-                print(e)
-                return Response("User Not Found", status=status.HTTP_204_NO_CONTENT)
+                return Response("user-not-found", status=status.HTTP_204_NO_CONTENT)
         else:
             return Response("No Pending User Given", status=status.HTTP_400_BAD_REQUEST)
     def destroy(self, request, pk=None):

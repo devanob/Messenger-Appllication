@@ -57,6 +57,12 @@ class UserMessageStore{
                         if (status === true){
                             this.loadMessages();
                         }
+                        else{
+                            return;
+                        }
+                        
+                    }).catch(error=>{
+                        console.log(error)
                     })
                 }
             
@@ -148,11 +154,18 @@ class UserMessageStore{
     setContactUsers(listContactUser){
         return new Promise((resolve, reject)=>{
             this.userMesagesModels = {}
-            listContactUser.forEach(user=>{
-                let userUUID = user.uuid;
-                this.userMesagesModels[userUUID] = new MessagesModel(this,user)
-            })
-            resolve(true);
+            if (listContactUser.length > 1){
+                listContactUser.forEach(user=>{
+                    let userUUID = user.uuid;
+                    this.userMesagesModels[userUUID] = new MessagesModel(this,user)
+                })
+                resolve(true);
+            }
+            else {
+                reject(false);
+            }
+        
+            
         })
         
         

@@ -239,6 +239,24 @@ class MessengerService {
         })
     }
 
+    sendContactRequest(userUUID){
+        
+        return  axios.post('http://127.0.0.1:8000/api/pending-contacts/',
+        {"uuid":userUUID},
+        this.headersList
+        ).then((response)=>{
+           return response;
+           
+        });
+        
+    }
+    getNextUsersSet(queryString){
+        return axios.get(queryString, this.headersList).
+        then(response=>{
+            return response.data;
+        })
+    }
+
 
    
     // initAPI(){

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import "../css/Content.css"
-import NavComponet from "./NavComponet";
-import MessageComponet from "./MessageComponet";
+import NavComponet from "./NavComponet/NavComponet";
+import MessageComponet from "./Messages/MessageComponet";
 import TextBoxMessageComponet from "./textBoxMessageComponet";
 import { inject, observer } from 'mobx-react';
 

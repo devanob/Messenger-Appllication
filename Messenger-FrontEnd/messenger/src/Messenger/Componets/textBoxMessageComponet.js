@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import MessengerTextArea from "./MessengerTextArea";
-import { inject, observer } from 'mobx-react';
+import MessengerTextArea from "./MessagingInput/MessengerTextArea";
+import { observer } from 'mobx-react';
 //TextBox Section This Is Where User Input And Sending Messages Will Be Handle On The Ui/Client Side
 class TextBoxMessageComponet extends Component{
   constructor(props){

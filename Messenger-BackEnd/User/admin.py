@@ -19,7 +19,7 @@ class contactListAdminForm(forms.ModelForm):
 
 class contactListAdmin(admin.ModelAdmin):
     form = contactListAdminForm
-    list_display = ['date_created',"friend_ship_initiator","friend"]
+    list_display = ['date_created',"friend_ship_initiator","friend", "combined_friend_id"]
     readonly_fields = ['date_created']
 
 

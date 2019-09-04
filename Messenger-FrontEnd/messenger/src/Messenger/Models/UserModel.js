@@ -1,5 +1,7 @@
 //IMPORTS
-// import {observer} from "mobx"
+import {observable} from "mobx"
+import { decorate } from 'mobx';
+import { action } from 'mobx';
 //Model The Users Contacts And Potential Contacts
 export default class UserModel {
     /**
@@ -12,8 +14,10 @@ export default class UserModel {
     user_image=null
     store = null;
     areActiveContact=null;
+    extraMeta = {}
     constructor(storeOwner, userJsonInfo, areActiveContact=null) {
         this.store = storeOwner;
+        //console.log(storeOwner);
         this.username = userJsonInfo.username;
         this.uuid = userJsonInfo.uuid;
         this.username = this.username;
@@ -23,6 +27,17 @@ export default class UserModel {
         else {
             this.areActiveContact =  false;
         }
+    }
+    /**
+     * 
+     * @param {*} data - Json Data To Be Merged With The Current Meta Data
+     */
+    setExtraMeta(data){
+        //merge the two data sources together
+        this.extraMeta = {...this.extraMeta, ...data};
+    }
+    get getExtraMeta(){
+        return this.extraMeta;
     }
     acceptRequest(){
         if (this.areActiveContact === false){
@@ -40,6 +55,10 @@ export default class UserModel {
         else {
             //more feats maybe error handling
         }
+    }
+    sendContactRequest(){
+        //make user request 
+        this.store.sendContactRequest(this);
     }
     setUserActive() {
         if (this.store){
@@ -78,3 +97,8 @@ export default class UserModel {
         
     }
 }
+
+decorate(UserModel, {
+    extraMeta : observable,
+    setExtraMeta:action
+})

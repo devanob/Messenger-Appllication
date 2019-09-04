@@ -18,20 +18,21 @@ export default class UserStore {
     loadingActiveError= false;
     loadingPendingError= false;
     transporLayer = null;
+    searchStore  = null;
     constructor(store=null,transporLayer=null,uiStore=null){
         this.store = store;
         this.transporLayer = transporLayer;
-        this.uiSideBarStore = new SearchUserStore(this,this.transporLayer,uiStore);
+        this.searchStore = new SearchUserStore(this,this.transporLayer,uiStore);
         when(
             ()=>{
                 
                 return this.transporLayer.isLoggedIn;
                 
             }, 
-            (isLoggedIn)=>{
+            ()=>{
                 //if the user is logged in then 
                 
-                    console.log("loaddata");
+                   
                     this.asyncLoadData().then(code=>{
                         console.log(code);
                     }).catch(error=>{
@@ -57,6 +58,9 @@ export default class UserStore {
             return false;
         }
         
+    }
+    get getSearchUserStore(){
+        return this.searchStore;
     }
     //set loading flags 
     setLoadingActive(bool){
@@ -108,7 +112,7 @@ export default class UserStore {
             }
         }
     }
-
+    
     setUser(user, isActive=true){
         if (isActive === true){
             let foundUser = this.activeContacts.find((element)=>{

@@ -1,0 +1,259 @@
+openapi: 3.0.2
+info:
+  title: ''
+  version: TODO
+paths:
+  /user/api/users/:
+    get:
+      operationId: ListUserInfoViewSets
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /user/api/users/active_contacts/:
+    get:
+      operationId: active_contactsUserInfoViewSet
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /user/api/users/pending_contacts/:
+    get:
+      operationId: pending_contactsUserInfoViewSet
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /user/api/users/{id}/:
+    get:
+      operationId: retrieveUserInfoViewSet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /user/api/active-contacts/:
+    get:
+      operationId: ListActiveContactsViewSets
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /user/api/pending-contacts/:
+    get:
+      operationId: ListPendingContactsViewSets
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+    post:
+      operationId: createPendingContactsViewSet
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /api/users/:
+    get:
+      operationId: ListUserInfoViewSets
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /api/users/active_contacts/:
+    get:
+      operationId: active_contactsUserInfoViewSet
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /api/users/pending_contacts/:
+    get:
+      operationId: pending_contactsUserInfoViewSet
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /api/users/{id}/:
+    get:
+      operationId: retrieveUserInfoViewSet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /api/active-contacts/:
+    get:
+      operationId: ListActiveContactsViewSets
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /api/pending-contacts/:
+    get:
+      operationId: ListPendingContactsViewSets
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+    post:
+      operationId: createPendingContactsViewSet
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /api/message/:
+    get:
+      operationId: ListUserMessages
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /api/message/{id}/:
+    get:
+      operationId: retrieveUserMessages
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /user/api/auth/login/:
+    post:
+      operationId: loginAuthenticationUser
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /user/api/auth/logout/:
+    post:
+      operationId: logoutAuthenticationUser
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /api/auth/login/:
+    post:
+      operationId: loginAuthenticationUser
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /api/auth/logout/:
+    post:
+      operationId: logoutAuthenticationUser
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /user/api/pending-contacts/{id}/:
+    put:
+      operationId: updatePendingContactsViewSet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+    delete:
+      operationId: destroyPendingContactsViewSet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+  /api/pending-contacts/{id}/:
+    put:
+      operationId: updatePendingContactsViewSet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+    delete:
+      operationId: destroyPendingContactsViewSet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}

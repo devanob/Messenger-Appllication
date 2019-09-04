@@ -43,7 +43,16 @@ class contactList(models.Model):
     date_created = models.DateTimeField(auto_now_add=True, editable=False, db_column='contact_date') # db_column='date_created'
     friend_ship_initiator = models.ForeignKey(User, related_name="friend_initiator",on_delete=models.CASCADE, db_column='friend_ship_initiator_id') #db_column='friend_ship_initiator
     friend = models.ForeignKey(User, related_name="friend_list",on_delete=models.CASCADE,db_column='friend_id')#db_column='friend
+    combined_friend_id  = models.CharField(max_length=64, unique=True)
     active_contact = models.BooleanField(default=False, db_column='active_contact' )
+
+    #custom save function 
+    def save(self, *args, **kwargs):
+        if self.date_created is None:
+            friend_ids = [self.friend_ship_initiator.uuid.hex,self.friend.uuid.hex]
+            friend_ids.sort()
+            self.combined_friend_id= ''.join(friend_ids)
+        return super(contactList, self).save(*args, **kwargs)
     def __str__(self):
         return 'Date : {} Stated By {} To {}'.format(self.date_created, self.friend_ship_initiator,self.friend)
     class Meta:

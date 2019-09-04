@@ -10,10 +10,23 @@ configure({ enforceActions: 'observed' })
 
 //UI Store Storeses Various States Of THe UI From Side Bar To Main Content
 class UIUserStore {
-    viableStates = [
-        "ACTIVECONTACTS",
-        "PENDNGCONTACT",
-        "SEARCHUSER",
+    viableStates =
+    [
+        {"ACTIVECONTACTS": 1 ,
+            
+                "uiName":"Active Contacts","stateName": "ACTIVECONTACTS"
+            
+        },
+        {"PENDINGCONTACTS": 2,
+            
+                "uiName":"Pending Contacts","stateName": "PENDINGCONTACTS"
+            
+        },
+        {"SEARCHPENDING": 3,
+            
+                "uiName":"Search Contacts","stateName": "SEARCHPENDING"
+            
+        },
     ]
     activeElement= "ACTIVECONTACTS";
     isActive = true;
@@ -44,15 +57,29 @@ class UIUserStore {
         this.isActive = !this.isActive;
     }
 
+    get getViableStates(){
+        return this.viableStates;
+    }
+    setActiveElement(state){
+        if (state != null ){
+            if (state === this.activeElement){
+                this.searchString = "";
+            }
+            this.viableStates.forEach(element => {
+                if (state in element){
+                    if (state !== this.activeElement){
+                        this.searchString = "";
+                    }
+                    this.activeElement = state;
+                    
 
-    setActiveElement(stateString){
-        if (this.viableStates.includes(stateString)){
-            this.activeElement = stateString;
+                }
+            })
         }
-        else {
-            console.log("Not A Viable State");
-            throw new Error("State Change Not Valid");
+        else{
+            console.log("Null Given For State: Error");
         }
+        
     }
 
 }
@@ -67,7 +94,7 @@ decorate(UIUserStore,
     setActiveElement: action,
     searchString: observable,
     getSearchString : computed,
-    setsearchString : action 
+    setsearchString : action,
     }
 )
 
