@@ -6,13 +6,15 @@ import React from "react";
  */
 //Provides Toggling/Button Abilities
 function Toggler(props) {
-    const {onClickHandlier = null} = props;
+    const {onClickHandlier = null, children=null, text=null, className=null} = props;
     if (onClickHandlier == null){
       
     }
     return (
-      <div className="toggler">
-        <button  onClick ={onClickHandlier}>Close</button>
+      <div className={`toggler ${className}`}>
+        <button  onClick ={onClickHandlier}>
+        {text}
+        {children}</button>
       </div>
     );
 }

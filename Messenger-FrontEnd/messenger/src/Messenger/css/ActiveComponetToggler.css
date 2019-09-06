@@ -1,0 +1,49 @@
+ /* User State Toggler
+--------------------------------*/
+
+.users-type-toggler{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+  }
+  
+  .users-type-toggler-list{
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .users-type-toggler-list .item-type{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .users-type-toggler-list button{
+    height: 100%;
+    width: 100%;
+    background-color: rgba(128, 0, 128, 0.075);
+    border-width: 1px;
+    border-color: rgba(128, 0, 128, 0.075);
+    color:white;
+    font-weight: 600;
+   
+  }
+
+  .users-type-toggler-list button:hover{
+    
+    border-color: rgba(128, 0, 128, 0.432);
+    font-weight: 900;
+  
+  }
+

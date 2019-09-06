@@ -2,21 +2,24 @@ import { observable, computed, action, decorate, configure, reaction} from "mobx
 
 configure({ enforceActions: 'observed' })
 //IMPORTS
-//Model The Users Contacts And Potential Contacts
+//Provides A Store For User Login And Logout System Communticates With The Messenger Service
 export default class LogInStore{
-    /**
-     *
-     * @param {*} storeOwner-Store Owner-Owned By This Store Instance
-     */
     
+    /* 
+     * @param {*} store - store manager manages this store instance 
+     * @param {*} transporLayer  - the messenger service transporLayer
+     * @param {*} uiStore- uid store layer 
+     */
     constructor(store=null,transporLayer=null, uiStore= null){
         this.store = store;
         this.transporLayer = transporLayer;
         this.uiStore = uiStore;
+        //check if the user is already loggin i.e session authenication
         
     }
     //handles loggin in the user from the transport layer side of things 
     logInUser(username=null, password=null){
+        //Does allow empty username and passwords
         if (username == null || password == null){
             ///
         }
@@ -31,6 +34,9 @@ export default class LogInStore{
             })
         }
     }
+    /**
+     * returns if the current user is logged in or not 
+     */
     get isLoggedIn(){
         if (this.transporLayer != null){
             return this.transporLayer.isLoggedIn

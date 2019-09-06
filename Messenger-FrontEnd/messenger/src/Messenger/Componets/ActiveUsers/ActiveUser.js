@@ -23,14 +23,14 @@ class ActiveUser extends Component {
                     <div className = "contact-info" >
                         <div> { user.username } </div> 
                     </div >
-                    <div className="active-user-status">
+                    {/* <div className="active-user-status">
                         <div className="online">
                             <button>Online</button>
                         </div>
                         <div className="offline">
                             <button>Offline</button>
                         </div>
-                    </div>
+                    </div> */}
                 </a> 
             </li >
         );

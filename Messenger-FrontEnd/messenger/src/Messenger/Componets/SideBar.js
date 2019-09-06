@@ -13,6 +13,7 @@ import "../css/Search.css"
 import "../css/Toggler.css"
 import "../css/LoadingSpinner.css"
 import "../css/SearchedUser.css"
+import "../css/ActiveComponetToggler.css"
 import SearchedUsersComponet from "./SearchUsers/SearchedUsersComponet";
 //Manages The Most Top Layer Of The Side Bar U.I
 class SideBar extends Component{

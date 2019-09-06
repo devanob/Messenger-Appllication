@@ -18,7 +18,8 @@ from django.urls import path,include
 from User.urls import router as user_api
 from messenger.urls  import router as messenger_api
 from  .routers import DefaultRouter
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 # url_api = []
 # url_api+= messenger_api.urls
@@ -31,6 +32,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include("User.urls")),
     path('api/', include(router.urls)),
-
-    
-]
+    path('messenger/', include("messenger.urls"),)    
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

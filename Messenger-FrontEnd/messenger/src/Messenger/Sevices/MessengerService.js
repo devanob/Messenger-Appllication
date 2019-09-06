@@ -85,6 +85,10 @@ class MessengerService {
     get isLoggedIn(){
         return this.isLoggin;
     }
+    //action sets the user loggined flag
+    //  isLoggedIn(bool){
+    //     this.isLoggin = bool;
+    // }
     ///send message vio websocket to the host
     sendMessageWebSocket(message){
          //add message type 
@@ -256,6 +260,10 @@ class MessengerService {
             return response.data;
         })
     }
+
+
+
+
 
 
    

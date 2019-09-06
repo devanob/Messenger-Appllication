@@ -3,6 +3,7 @@ import "../css/Content.css"
 import NavComponet from "./NavComponet/NavComponet";
 import MessageComponet from "./Messages/MessageComponet";
 import TextBoxMessageComponet from "./textBoxMessageComponet";
+import "../css/Messages.css"
 import { inject, observer } from 'mobx-react';
 
 //Handles The Main Content 

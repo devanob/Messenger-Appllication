@@ -10,7 +10,7 @@ from rest_framework.authentication import TokenAuthentication,SessionAuthenticat
 from django.contrib.auth import get_user_model
 from .serializers import UserBasicSerializers as UserSerializer
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from .models import contactList
 from django.db import transaction
 import uuid
@@ -20,13 +20,22 @@ import uuid
 class AuthenticationUser(viewsets.ViewSet):
     "User Authentication API Basic And Session Based Authentication"
     authentication_classes = [TokenAuthentication, SessionAuthentication]
-
+    @action(detail=False, methods=['get'], name="Verifies If The User Is Already LoggIn ")
+    def islogin(self,request):
+        if request.user.is_authenticated:
+            return Response(
+                    {
+                        "isLoggedIn":True,
+                        "user": UserSerializer(request.user).data
+                    },status=status.HTTP_200_OK)
+        else:
+            return Response(
+                    {"isLoggedIn" : False, "user": None
+                     },status=status.HTTP_200_OK)
     @action(detail=False, methods=['post'], name='Log In User Basic Cookie Authentication')
     def login(self,request):
         form = CustomAuthenticationForm(request,data=request.data)
-        print(request.data)
         # print(request.META["CONTENT_TYPE"])
-
         if form.is_valid():
             user = form.get_user()
             token, created = Token.objects.get_or_create(user=user)
@@ -38,10 +47,11 @@ class AuthenticationUser(viewsets.ViewSet):
             return Response(form.errors, status=status.HTTP_404_NOT_FOUND)
 
 
-    @action(detail=False, methods=['post'], name='Log Out User')
+    @action(detail=False, methods=['get'], name='Log Out User')
     def logout(self,request):
-        print(request.user)
-        return Response("Testing Logout", status=status.HTTP_201_CREATED)
+         if request.user.is_authenticated:
+             logout(request)
+             return Response("user-log-out", status=status.HTTP_200_OK)
 
 from rest_framework.pagination import PageNumberPagination
 #Pagination Class 

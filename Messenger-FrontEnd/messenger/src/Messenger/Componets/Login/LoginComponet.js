@@ -58,7 +58,6 @@ class LoginComponet extends Component{
                 <Modal.Title className="text-center" >Messenger LogIn</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            <Form>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control value={this.state.username} onChange={this.onChangeEmail}  placeholder="Enter email/username" />
@@ -77,7 +76,6 @@ class LoginComponet extends Component{
                 <Button onClick={this.logInHandlier} variant="primary" type="submit">
                     Login
                 </Button>
-            </Form>
             </Modal.Body>
             {/* <Modal.Footer>
             

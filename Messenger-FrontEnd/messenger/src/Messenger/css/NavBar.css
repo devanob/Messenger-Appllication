@@ -1,0 +1,7 @@
+/* Nav Bar Styling */
+.nav-bar-componet{
+    width: 100%;
+    flex-grow : 1;
+    display: flex;
+    
+}

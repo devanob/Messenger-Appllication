@@ -18,7 +18,7 @@ from django.urls import path
 from django.conf.urls import include, url
 from .api import UserMessages
 from rest_framework import routers
-
+from .views import messengerView
 router = routers.DefaultRouter()
 
 router.register(r'message', UserMessages, basename="messages")
@@ -26,5 +26,6 @@ router.register(r'message', UserMessages, basename="messages")
 
 urlpatterns = [
     path(r'api/', include(router.urls)),
+    path(r'', messengerView.as_view(), name = "messenger"),
 ]
 

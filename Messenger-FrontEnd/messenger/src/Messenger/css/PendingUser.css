@@ -8,12 +8,12 @@
   }
   
   .pendingUsers .users li{
-    background-color: #f6f6f6;
-    border-color: #ddd; 
+    background-color: rgba(0, 0, 255, 0.048);
+    border-color: #ddd;
     color: #333;
     text-shadow: 0 1px 0 #f3f3f3;
     border-top-left-radius: 0.1em;
-    border-width: 1px 0 0;
+    border-width: .0px 0 0;
     border-style: solid;
     overflow: visible;
     width: 100%;
@@ -23,25 +23,25 @@
   .pendingUsers .users li > a{
     display: flex;
     flex-direction: row;
-    background-color: #f6f6f6;
+    background-color: #f6f6f649;
     border-color: #ddd;
     color: #333;
     height: 100%;
     text-shadow: 0 1px 0 #f3f3f3;
     border-top-left-radius: 0.1em;
-    border-width: 3px 0 0;
+    border-width: 5px 0 0;
     text-decoration: none;
-    height:auto;
+    height: auto;
   
   
    
   }
   
   .pendingUsers .users li > a:hover{
-    background-color: #ededed;
+    /* background-color: rgba(0, 0, 255, 0.151);
     border-color: #ddd;
     color: #333;
-    text-shadow: 0 1px 0 #f3f3f3;
+    text-shadow: 0 1px 0 #f3f3f3; */
   }
   
   .pendingUsers .users .profile-img{
@@ -73,6 +73,7 @@
     width: 100%;
     font-size: 1.1em;
     font-weight: 600;
+    color:white;
   }
   .pendingUsers   .users .pending-user-control {
     flex-grow: 1;
@@ -91,7 +92,7 @@
     margin: 0%;
   }
   .pendingUsers ul>:first-child{
-      background-color: blue;
+      
   }
   
   
@@ -120,13 +121,23 @@
         height: 100%;
   }
 .pending-user-control .add-contact button {
-      background-color:#5cbf2a;
-      border: 1px solid #5cbf2a;
+      background-color:#5cbf2a91;
+      border: 1px solid #5cbf2a93;
       
 }
+
+.pending-user-control .add-contact button:hover {
+  background-color:#5cbf2a;
+  border: 1px solid #5cbf2a;
+  
+}
 .pending-user-control .reject-contact button {
-    background-color:#bf722a;
-    border: 1px solid #bf722a;
+    background-color:#bf722a8c;
+    border: 1px solid #bf722a93;
+}
+.pending-user-control .reject-contact button:hover {
+  background-color:#bf722af1;
+  border: 1px solid #bf722a;
 }
   .pending-user-control button:active {
       position:relative;

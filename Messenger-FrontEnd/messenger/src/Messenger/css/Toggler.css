@@ -4,5 +4,21 @@
 .toggler{
    
     width: 100%;
-    background-color: rgba(0, 0, 255, 0.397);
+    /* background-color: rgba(0, 0, 255, 0.397); */
+}
+
+.toggler.main-toggle button{
+  /* //To Be Moved Soon Must become seperate componet */
+  font-size: 1.5em;
+  border: 3px solid rgba(255, 255, 255, 0.342);
+  height: white;
+  margin: 0.5em;
+  color: white;
+  background: rgba(128, 0, 128, 0.075);
+}
+
+.toggler.main-toggle button:hover{
+  /* //To Be Moved Soon Must become seperate componet */
+ 
+  background: rgba(128, 0, 128, 0.384);
 }

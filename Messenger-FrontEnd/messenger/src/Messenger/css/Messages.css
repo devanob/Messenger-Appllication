@@ -1,0 +1,72 @@
+/* Message Componet Styling */
+.message-componet{
+    
+    height: 76%;
+    padding-top : 0.3em;
+    padding-bottom : 0.3em;
+    padding-left: 1.8em;
+    padding-right: 1.8em;
+    
+}
+.message-box{
+    
+    word-wrap: break-word;
+    margin-top: 0.5em;
+    width: 65%;
+    padding: 1em;
+    border-radius: 0.5em;
+}
+
+.message-list-area{
+    list-style-type: none;
+    padding: 0;
+    overflow-y: auto;
+    height: 100%;
+    margin: 0;
+}
+
+.message-list-area > li{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    
+}
+
+.message-list-area > li.message.left{
+    justify-content: flex-start;
+    
+    
+}
+
+
+.message-list-area > li.message.right{
+    justify-content: flex-end;
+  
+    
+}
+
+.message-list-area > li.message.left > .message-box{
+    background-color: rgba(0, 128, 0, 0.185);
+    color: white;
+    
+}
+
+.message-list-area > li.message.left > .message-box:hover{
+    background-color: rgba(0, 128, 0, 0.514);
+    color: white;
+    
+}
+
+.message-list-area > li.message.right > .message-box{
+    background-color: rgba(0, 0, 255, 0.212);
+    
+    
+}
+
+.message-list-area > li.message.right > .message-box:hover{
+    background-color: rgba(0, 0, 255, 0.507);
+    
+    
+}

@@ -3,33 +3,39 @@ import { observable, computed, action, decorate, configure} from "mobx";
 
 configure({ enforceActions: 'observed' })
 //IMPORTS
-//Model The Users Contacts And Potential Contacts
+/**
+ * Provides A Search User Store Implementation For Search For Users Using The RestAPI
+ */
 export default class SearchUserStore{
     /**
      *
      * @param {*} storeOwner-Store Owner-Owned By This Store Instance
      */
-    searchedUsers = [];
-    nextQueryAddress= null ;
-    uiSideBar= null;
-    transporLayer = null;
-    loadingUsers= false;
-    loadUserError=false;
+    searchedUsers = []; //observable list of searched users 
+    nextQueryAddress= null ; // the next query string users 
+    uiSideBar= null; //ui store 
+    transporLayer = null; //messenger service layer
+    loadingUsers= false; //flag represents if the users are being currenlty loaded
+    loadUserError=false; //check if the users where loaded 
     constructor(store=null,transporLayer=null, uiStore= null){
         this.store = store;
         this.transporLayer = transporLayer;
         this.uiStore = uiStore;
         
     }
+    //user loaded from search 
     get getloadingUser() {
         return this.loadingUsers;
     }
+    //user search result in error or not 
     get getloadingUserError() {
         return this.loadUserError;
     }
+    //get the next query string for currently search 
     get getNextQueryAddress(){
         return this.nextQueryAddress;
     }
+    //get a computed set of searched users
     get getSearchedUsers(){
         if (this.searchedUsers.length < 1){
             return false;
@@ -38,6 +44,7 @@ export default class SearchUserStore{
             return this.searchedUsers;
         }
     }
+    //sets the list of user by added the  newly search api results to the current set 
     setSearchUsers(listUser){
         let mappedUsers = listUser.map(user=>{
             let userModelInstance = new UserModel(this,user,false);
@@ -48,7 +55,7 @@ export default class SearchUserStore{
         });
         this.searchedUsers.push(...mappedUsers);
     }
-    //makes a request to the server api for list user with matching queries
+    //makes a request to the server api for list user with matching queries emptying the current search  ie new search 
     searchForUsers(){
         let searchUserQuery = this.uiStore.getSearchString;
         //cannot make empty string queries
@@ -86,6 +93,7 @@ export default class SearchUserStore{
             }
         }));
     }
+    //loads the next set of users from the rest api 
     getNextDataSet(){
         this.transporLayer.getNextUsersSet(this.nextQueryAddress)
         .then(action(data=>{

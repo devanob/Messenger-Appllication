@@ -25,7 +25,7 @@ SECRET_KEY = '&g=9&ezfc(857fxlf2(xbt9fwng91q)==^e%g9@^985!nh@j5='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 AUTH_USER_MODEL = "User.User" 
@@ -165,3 +165,7 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.SessionAuthentication',
     ]
 }
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"), # your static/ files folder
+]
