@@ -1,0 +1,19 @@
+.account-section button{
+    /* //To Be Moved Soon Must become seperate componet */
+    font-size: 1.5em;
+    border: 3px solid rgba(255, 255, 255, 0.342);
+    margin: 0.5em;
+    color: white;
+    background: rgba(128, 0, 128, 0.075);
+  }    
+
+  .account-section button svg{
+    margin-right: 0.5em;
+  } 
+
+
+  .account-section button:hover{
+    /* //To Be Moved Soon Must become seperate componet */
+   
+    background: rgba(128, 0, 128, 0.26);
+  }

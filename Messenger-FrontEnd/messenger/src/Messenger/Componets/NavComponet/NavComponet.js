@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import Toggler from "../TogglerComponet/Toggler";
 import { inject} from 'mobx-react';
-import LoginComponet from "../Login/LoginComponet";
+import AccountComponet from "../Login/AccountComponet";
 import "../../css/NavBar.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faAlignLeft} from '@fortawesome/free-solid-svg-icons'
@@ -20,7 +20,7 @@ class NavComponet extends Component{
       <div className = "nav-bar-componet">
           <Toggler onClickHandlier = {this.toggleSideBarState} className="main-toggle">
             <FontAwesomeIcon icon={faAlignLeft} />  Open/Close </Toggler>
-          <LoginComponet logInStore ={this.props.rootStore.logInStore }></LoginComponet>
+          <AccountComponet logInStore ={this.props.rootStore.logInStore }></AccountComponet >
       </div>)
   }
   

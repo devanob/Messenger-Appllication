@@ -32,6 +32,14 @@ class MessengerService {
 
         
         )
+        this.checkUserLoggedIn().then(user=>{
+            if (user != null){
+                this.setLoggedIn(true);
+            }
+            else {
+                this.setLoggedIn(false);
+            }
+        })
         
     }
     /**
@@ -192,6 +200,7 @@ class MessengerService {
                 }
             })
         }
+        //login the given user correct 
         return  axios.post('http://127.0.0.1:8000/user/api/auth/login/',
         {"username":username, "password": password},
         this.headersList
@@ -206,6 +215,11 @@ class MessengerService {
         });
         
     }
+    //send a request to the api to reject the given user contact request with the given uuid
+    //**
+    /* 
+     * @param {*} user_uuid accepted user uuid 
+     */
 
     acceptContactRequest(user_uuid){
         let putRequest = `http://127.0.0.1:8000/api/pending-contacts/${user_uuid}/`
@@ -220,7 +234,11 @@ class MessengerService {
             }
         });
     }
-
+    //send a request to the api to reject the given user contact request with the given uuid
+    //**
+    /* 
+     * @param {*} user_uuid rejected user uuid 
+     */
     denyContactRequest(user_uuid){
         console.log(user_uuid);
         console.log(this.headersList);
@@ -236,13 +254,17 @@ class MessengerService {
             }
         });
     }
+    /**
+     * Queiries the api for user with the given pattern match querySearch - Will Not Return user already pending or contact
+     * @param {*} querySearch  - the get param for api user queries search 
+     */
     searchUsers(querySearch){
         return axios.get(`http://127.0.0.1:8000/api/users/?search=${querySearch}`, this.headersList).
             then(response=>{
                 return response.data;
         })
     }
-
+    //send a contact request to the user with the given uuid
     sendContactRequest(userUUID){
         
         return  axios.post('http://127.0.0.1:8000/api/pending-contacts/',
@@ -254,11 +276,33 @@ class MessengerService {
         });
         
     }
+    //queries for the next user search query
     getNextUsersSet(queryString){
         return axios.get(queryString, this.headersList).
         then(response=>{
             return response.data;
         })
+    }
+    /**Check if the user is logged in using the api 
+     * 
+        
+     */
+    checkUserLoggedIn(){
+        return this.checkLoggedInAPI().then(response=>{
+            //user is logged
+            if (response.status === 200 && response.data.isLoggedIn === true ){
+                return response.data.user
+            }
+            else {
+                return null;
+            }
+        })
+    }
+    checkLoggedInAPI(){
+        return axios.get("http://127.0.0.1:8000/api/auth/islogin/", this.headersList).
+            then(response=>{
+                return response;
+            })
     }
 
 

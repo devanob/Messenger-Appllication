@@ -10,10 +10,11 @@
     width:0;
     padding: 0;
     visibility: hidden;
-    transition: all 0.5s ease;
+    transition: width 0.5s ease-in-out, opacity 0.5s ease;
     border-right-width: 2px;
     border-right-color: rgba(0, 0, 0, 0.377);
     border-right-style: solid;
+    opacity: 0;
   
   }
   
@@ -21,6 +22,7 @@
     width:100vw;
     padding: 0.5;
     visibility: visible;
+    opacity: 1;
   }
   
   
@@ -30,6 +32,7 @@
       width:100vw;
       padding: 0.5;
       visibility: visible;
+      opacity: 1;
     }
    }
   
@@ -39,6 +42,7 @@
       width:100vw;
       padding: 0.5;
       visibility: visible;
+      opacity: 1;
     }
    }
 
@@ -47,6 +51,7 @@
       width:30vw;
       padding: 0.5;
       visibility: visible;
+      opacity: 1;
     }
    }
   
@@ -56,6 +61,7 @@
       width:30vw;
       padding: 0.5;
       visibility: visible;
+      opacity: 1;
     }
   }
 
