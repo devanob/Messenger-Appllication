@@ -76,9 +76,9 @@ class MessengerConsumer(AsyncJsonWebsocketConsumer):
         
 
     async def message(self,event):
+        print(1)
         event['type'] = 'message'
         message = event
-        print(message)
         await self.send_json(message);
 
     @database_sync_to_async

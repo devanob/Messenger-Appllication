@@ -30,7 +30,6 @@ class MessagesModel{
 
     
     addMessage(mssgJson){
-       
        if ((mssgJson.to_User === this.user.uuid || mssgJson.from_User === this.user.uuid) ){
             this.messages.push(mssgJson)
         }

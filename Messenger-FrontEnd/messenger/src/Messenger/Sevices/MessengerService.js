@@ -142,6 +142,7 @@ class MessengerService {
         });
 
         this.reconnectingWebSocket.addEventListener('close', (mssg) => {
+            
             console.log("Disconnected To WebSocket");
             this.setConnectedWebSocketFlag(false);
         });
@@ -181,6 +182,7 @@ class MessengerService {
     }
 
     getMessages(){
+        
         return axios.get('http://127.0.0.1:8000/api/message/',
         this.headersList
         ).then((response)=>{

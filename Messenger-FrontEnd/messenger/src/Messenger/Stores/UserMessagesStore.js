@@ -71,15 +71,16 @@ class UserMessageStore{
         
     }
     receiveMessage = (event)=>{
+
         let to_UserModel = this.userMesagesModels[event.to_User];
         let from_UserModel = this.userMesagesModels[event.from_User]
-        console.log(this.userMesagesModels);
+        if (from_UserModel !== null & typeof from_UserModel !== "undefined"){
+            from_UserModel.addMessage(event);
+        }
         if (to_UserModel !== null & typeof to_UserModel !== "undefined"){
             to_UserModel.addMessage(event);
         }
-        else if (from_UserModel !== null & typeof from_UserModel !== "undefined"){
-            from_UserModel.addMessage(event);
-        }
+        
         else {
            
         }

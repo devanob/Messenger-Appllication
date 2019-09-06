@@ -45,7 +45,7 @@ class CustomerUserAdmin(UserAdmin):
     ordering = ('email',)
     filter_horizontal = ()
     fieldsets = (
-        (('User'), {'fields': ('username', 'email','is_staff', 'uuid', 'user_image')}),
+        (('User'), {'fields': ('username', 'email','is_staff', 'uuid', 'user_image','password',)}),
     )
 
     add_fieldsets = (
