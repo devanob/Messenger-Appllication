@@ -31,6 +31,5 @@ router.extend(messenger_api)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include("User.urls")),
-    path('api/', include(router.urls)),
-    path('messenger/', include("messenger.urls"),)    
+    path('api/', include(router.urls)), 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

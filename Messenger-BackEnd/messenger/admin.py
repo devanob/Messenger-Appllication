@@ -30,7 +30,7 @@ class DirectConversationRecordsAdminForm(forms.ModelForm):
 
 class DirectConversationRecordsAdmin(admin.ModelAdmin):
     form = DirectConversationRecordsAdminForm
-    list_display = ['user_one',"user_two", "conversation_id" ]
+    list_display = ['user_one',"user_two", "conversation_id","last_spoken_to" ]
     # readonly_fields = ['date_created']
 
 admin.site.register(DirectConversationRecords,DirectConversationRecordsAdmin)

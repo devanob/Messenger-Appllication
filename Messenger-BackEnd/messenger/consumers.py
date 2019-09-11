@@ -41,6 +41,7 @@ class MessengerConsumer(AsyncJsonWebsocketConsumer):
             pass
         self.connected = False
         print(close_code)
+
     async def checkActive(self):
         while self.connected:
             await asyncio.sleep(8)
@@ -48,7 +49,6 @@ class MessengerConsumer(AsyncJsonWebsocketConsumer):
             print("Still Here")
         print("Web Socket IS Disconnected")
 
-    
     
     async def receive_json(self,content):
         ##check if the user sent a message with type
@@ -76,7 +76,6 @@ class MessengerConsumer(AsyncJsonWebsocketConsumer):
         
 
     async def message(self,event):
-        print(1)
         event['type'] = 'message'
         message = event
         await self.send_json(message);
@@ -126,15 +125,10 @@ class MessengerConsumer(AsyncJsonWebsocketConsumer):
                             direct_conversation_id = conversation_Model,
                             message = message["message"]
                             )
+            conversation_Model.save()
             mssg.save()
            
             return (mssg)
-
-
-
-                
-
-                
 
         except  Exception as e:
             print(e)

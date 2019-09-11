@@ -16,12 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include, url
-from .api import UserMessages
+from .api import UserMessages, UserActiveContact, UserPendingContact
 from rest_framework import routers
 from .views import messengerView
-router = routers.DefaultRouter()
 
+router = routers.DefaultRouter()
+router.register(r'active-contacts',UserActiveContact, basename="active-contacts")
 router.register(r'message', UserMessages, basename="messages")
+router.register(r'pending-contacts',UserPendingContact, base_name='pending-contacts')
+
 
 
 urlpatterns = [

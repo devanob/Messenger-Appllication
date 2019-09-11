@@ -162,21 +162,41 @@ class MessengerService {
        });
        return messageService;
     }
+    //gets the current active user a list of contacts
     getContacts(){
-        return axios.get('http://127.0.0.1:8000/user/api/users/active_contacts/',
+        return axios.get('http://127.0.0.1:8000/api/active-contacts/',
         this.headersList
         ).then((response)=>{
-                return response.data;
+                let activeUser = response.data.current_user;
+                
+                let contacts = response.data.contacts.map(contact=>{
+                    //filter out the current user instances 
+                    let contactJson = contact.friend.uuid === activeUser ? contact.friend_ship_initiator : contact.friend;
+                    contactJson["contact_id"] = contact.id;
+                    return contactJson;
+                })
+                console.log(contacts);
+                return contacts;
             }
         )
       
     }
     getPendingContacts(){
-        return axios.get('http://127.0.0.1:8000/user/api/users/pending_contacts/',
+        return axios.get('http://127.0.0.1:8000/api/pending-contacts/',
         this.headersList
         ).then((response)=>{
-            return response.data;
-        }
+                let activeUser = response.data.current_user;
+                
+                let contacts = response.data.contacts.map(contact=>{
+                    //filter out the current user instances 
+                    let contactJson = contact.friend.uuid === activeUser ? contact.friend_ship_initiator : contact.friend;
+                    contactJson["contact_id"] = contact.id;
+                    return contactJson;
+                })
+
+                console.log(contacts);
+                return contacts;
+            }
         )
         
     }
@@ -217,14 +237,14 @@ class MessengerService {
         });
         
     }
-    //send a request to the api to reject the given user contact request with the given uuid
+    //send a request to the api to accep the given user contact request with the given id
     //**
     /* 
      * @param {*} user_uuid accepted user uuid 
      */
 
-    acceptContactRequest(user_uuid){
-        let putRequest = `http://127.0.0.1:8000/api/pending-contacts/${user_uuid}/`
+    acceptContactRequest(contact_id){
+        let putRequest = `http://127.0.0.1:8000/api/pending-contacts/${contact_id}/`
         return axios.put(putRequest,{},this.headersList ).then(response=>{
             ///if the resource was modified then return the user data
             if (response.status === 200){

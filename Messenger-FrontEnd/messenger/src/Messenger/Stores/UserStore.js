@@ -45,18 +45,17 @@ export default class UserStore {
     //Load contacts active and pending from the server using the transport layer
     loadData(){
        
-        this.loadContacts();
+        this.loadContacts().catch(error=>{
+            console.log(error);
+            this.loadingActiveError = true;
+        });
         this.loadPendingContacts();
     }
     async asyncLoadData(){
-        try{
+       
             await this.loadContacts();
             await this.loadPendingContacts();
-            return true
-        }
-        catch(error){
-            return false;
-        }
+            return true;        
         
     }
     get getSearchUserStore(){
@@ -122,7 +121,11 @@ export default class UserStore {
                 foundUser.upDate(user);
             }
             else {
-                this.activeContacts.push(new UserModel(this,user,true));
+                let newUser = new UserModel(this,user,true);
+                if ("contact_id" in user ){
+                    newUser.setExtraMeta({"contact_id" : user.contact_id})
+                }
+                this.activeContacts.push(newUser);
             }
             
         }
@@ -134,14 +137,17 @@ export default class UserStore {
                 foundUser.upDate(user);
             }
             else {
-                this.pendingContacts.push(new UserModel(this,user,false));
+                let newUser = new UserModel(this,user,false);
+                if ("contact_id" in user ){
+                    newUser.setExtraMeta({"contact_id" : user.contact_id})
+                }
+                this.pendingContacts.push(newUser);
             }
         }
     }
 
     loadContacts(){
         this.setLoadingActive(true);
-        
         return this.transporLayer.getContacts().then(usersContactList=>{
                 //console.log(usersContactList);
                 if (usersContactList.length === 0){
@@ -154,10 +160,7 @@ export default class UserStore {
                 this.setLoadingActive(false);
                 return;
             }
-        ).catch(error=>{
-            console.log(error);
-            this.loadingActiveError = true;
-        })
+        );
     }
     loadPendingContacts(){
         this.setLoadingPending(true);
@@ -173,10 +176,7 @@ export default class UserStore {
                 return;
             }
             
-        ).catch(error=>{
-            console.log(error);
-            this.loadingPendingError = true;
-        })
+        )
 
     }
     setActiveContact(idUsername){
@@ -224,7 +224,7 @@ export default class UserStore {
     }
 
     requestAcceptHandlier(userModel){
-        this.transporLayer.acceptContactRequest(userModel.uuid).then(action(response=>{
+        this.transporLayer.acceptContactRequest(userModel.getExtraMeta["contact_id"]).then(action(response=>{
             //if the request was accepted Contact made active
             if (response){
                 //splice  from pending here
@@ -244,7 +244,7 @@ export default class UserStore {
     //Accept A Model To Accepted Into The Active List Of Contacts
     //Handles Accepting Of Contact Request
     requestDenyHandlier(userModel){
-        this.transporLayer.denyContactRequest(userModel.uuid).then(action(response=>{
+        this.transporLayer.denyContactRequest(userModel.getExtraMeta["contact_id"]).then(action(response=>{
             //if the request was accepted Contact made active
             if (response){
                 //splice  from pending here

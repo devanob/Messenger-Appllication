@@ -22,8 +22,8 @@ router = routers.DefaultRouter()
 
 router.register(r'auth', AuthenticationUser, basename="auth")
 router.register(r'users', UserInfoViewSet, basename="users")
-router.register(r'active-contacts', ActiveContactsViewSet, basename="active-users")
-router.register(r'pending-contacts', PendingContactsViewSet, basename="pending-users")
+#router.register(r'active-contacts', ActiveContactsViewSet, basename="active-users")
+#router.register(r'pending-contacts', PendingContactsViewSet, basename="pending-users")
 
 urlpatterns = [
     path(r'api/', include(router.urls)),
