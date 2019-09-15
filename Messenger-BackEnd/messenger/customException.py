@@ -1,0 +1,2 @@
+class LengthToLarge(Exception):
+    pass

@@ -3,6 +3,7 @@ import { observer,inject } from "mobx-react"
 import ActiveUser from "./ActiveUser"
 import Spinner from 'react-bootstrap/Spinner';
 import SpinnerComponet from "../LoadingSpinner/SpinnerComponet"
+import RootStore from '../../Stores/rootStore';
 
 //Manages UI Active Users Displayed To The User
 class ActiveUsers extends Component{
@@ -12,7 +13,8 @@ class ActiveUsers extends Component{
 
   render() {
     const {rootStore,searchText} = this.props;
-    let activeUsers = rootStore.userStore.listActiveContacts;
+    const activeUsers = rootStore.userStore.listActiveContacts;
+    const messageModel= rootStore.userMessageStore;
     let loading = rootStore.userStore.getIsLoadingActive;
     if (!loading){
       //f not active user 
@@ -39,7 +41,7 @@ class ActiveUsers extends Component{
                     // </Spinner>
                     // </> */}
 
-                    <ActiveUser  key={user.uuid} user={user}></ActiveUser>
+                    <ActiveUser messageModel={messageModel} key={user.uuid} user={user}></ActiveUser>
                    
                   );
               })}

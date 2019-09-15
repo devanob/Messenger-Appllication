@@ -44,7 +44,7 @@ class contactList(models.Model):
     friend_ship_initiator = models.ForeignKey(User, related_name="friend_initiator",on_delete=models.CASCADE, db_column='friend_ship_initiator_id') #db_column='friend_ship_initiator
     friend = models.ForeignKey(User, related_name="friend_list",on_delete=models.CASCADE,db_column='friend_id')#db_column='friend
     combined_friend_id  = models.CharField(max_length=64, unique=True)
-    active_contact = models.BooleanField(default=False, db_column='active_contact' )
+    active_contact = models.BooleanField(default=False, db_column='active_contact')
 
     #custom save function 
     def save(self, *args, **kwargs):

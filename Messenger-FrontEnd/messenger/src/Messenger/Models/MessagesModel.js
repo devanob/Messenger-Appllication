@@ -27,6 +27,14 @@ class MessagesModel{
     get getMessages(){
         return this.userMesages;
     }
+    get getLastMessage(){
+        if (this.messages.length < 1){
+            return "";
+        }
+        else {
+            return this.messages[this.messages.length -1];
+        }
+    }
 
     
     addMessage(mssgJson){
@@ -61,6 +69,7 @@ decorate(MessagesModel, {
     addMessage : action,
     getMessages: computed, 
     bulkAddMessages: action,
+    getLastMessage : computed
 
 })
 

@@ -11,8 +11,16 @@ class ActiveUser extends Component {
     setActive = () => {
         this.props.user.setUserActive();
     }
+    truncate = (string) => {
+        console.log(string)
+        return string.length > 5 ? `${string.substring(0, 5)}...` : string
+    };
     render() {
-        const {user = null } = this.props;
+        const {user = null, messageModel=null } = this.props;
+        let message = "";
+        if (messageModel != null){
+            message=messageModel.getMessageModel(user.uuid).getLastMessage.message;
+        }
 
         return ( 
             <li onClick = { this.setActive } >
@@ -21,16 +29,11 @@ class ActiveUser extends Component {
                         <img src = "https://via.placeholder.com/500" alt = { `user-profile ${user.username}` }/>  
                     </div > 
                     <div className = "contact-info" >
-                        <div> { user.username } </div> 
+                        <div className="name"> { user.username } </div> 
+                        <div className="online-status">.</div> 
+                        <div className="last-message">{message}</div>
                     </div >
-                    {/* <div className="active-user-status">
-                        <div className="online">
-                            <button>Online</button>
-                        </div>
-                        <div className="offline">
-                            <button>Offline</button>
-                        </div>
-                    </div> */}
+                   
                 </a> 
             </li >
         );

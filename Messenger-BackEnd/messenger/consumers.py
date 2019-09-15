@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.core import serializers
 import json
 import asyncio
+from User.models import contactList
 class MessengerConsumer(AsyncJsonWebsocketConsumer):
     group_name = None
     # this is a list of cached users you are talking to to avoid database queries
@@ -61,18 +62,19 @@ class MessengerConsumer(AsyncJsonWebsocketConsumer):
        
     async def typeMessageHandlier(self, content):
         message = await self.processMessage(content)
-        serialized_obj = serializers.serialize('json', [ message, ])
-        messageDict= json.loads(serialized_obj)
-        messageDict[0]["fields"]['id'] = messageDict[0]["pk"]
-        message = messageDict[0]["fields"]
-        message['type'] = "message"
-        to_User = message["to_User"]
-        from_User = message["from_User"]
-        if (to_User == from_User):
-            await self.channel_layer.group_send(to_User, message)
-        else:
-            await self.channel_layer.group_send(from_User, message)
-            await self.channel_layer.group_send(to_User, message)
+        if message is not None:
+            serialized_obj = serializers.serialize('json', [ message, ])
+            messageDict= json.loads(serialized_obj)
+            messageDict[0]["fields"]['id'] = messageDict[0]["pk"]
+            message = messageDict[0]["fields"]
+            message['type'] = "message"
+            to_User = message["to_User"]
+            from_User = message["from_User"]
+            if (to_User == from_User):
+                await self.channel_layer.group_send(to_User, message)
+            else:
+                await self.channel_layer.group_send(from_User, message)
+                await self.channel_layer.group_send(to_User, message)
         
 
     async def message(self,event):
@@ -90,6 +92,7 @@ class MessengerConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def processMessage(self,message):
+        print(message)
         # tries to catch the any errors
         try:
             #check if we already have the user
@@ -117,7 +120,20 @@ class MessengerConsumer(AsyncJsonWebsocketConsumer):
                     self.cached_conversations[to_User]= conversation_Model 
                     #we need to make a conversation id
                 else:
-                    conversation_Model =  DirectConversationRecords(user_one =self.user, user_two = to_User_model)
+                    contact = None
+                    if "contact_id" in message:
+                        try:
+                            queryContacts = Q(friend_ship_initiator=self.user)  | Q(friend=self.user)
+                            #check if the users are actually friends
+                            contact_check =  contactList.objects.filter(queryContacts)
+                            contact =  contact_check.get(id=int(message["contact_id"]))
+                        except Exception as e:
+                            print(e)
+                            return None;
+                    else :
+                        return None;
+                    conversation_Model =  DirectConversationRecords(user_one =self.user, user_two = to_User_model,\
+                                          contact=contact)
                     conversation_Model.save()
                     self.cached_conversations[to_User]=conversation_Model
             mssg = Messages(from_User = self.user,  

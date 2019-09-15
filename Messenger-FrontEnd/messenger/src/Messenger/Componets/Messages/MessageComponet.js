@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react';
 import MessageListComponet from "./MessageListComponet";
+import InfoComponet from '../InfoComponet/InfoComponet';
 //Manages The Ui Componet 
 class MessageComponet extends Component{
   constructor(props){
@@ -10,11 +11,11 @@ class MessageComponet extends Component{
 
   render() {
     const { rootStore} = this.props;
-    let activeUser = rootStore.userStore.currentActiveUser;
+    let activeUser = rootStore.userStore.getContactUser;
     let messages = rootStore.userMessageStore.getMessagesActiveUser
     let  objectToRender = null;
     if (activeUser == null ){
-        objectToRender = <div>No Active User Click On One</div>
+        objectToRender = <InfoComponet className="no-active-user">No Active User</InfoComponet>
     }
     else {
         let uuidUser = activeUser.uuid;

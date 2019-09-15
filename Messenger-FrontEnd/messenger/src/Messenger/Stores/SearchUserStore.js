@@ -21,6 +21,10 @@ export default class SearchUserStore{
         this.store = store;
         this.transporLayer = transporLayer;
         this.uiStore = uiStore;
+        //register it self with parent with name
+        if (this.store != null){
+            this.store.registerChild("searchUsersStore", this);
+        }
         
     }
     //user loaded from search 

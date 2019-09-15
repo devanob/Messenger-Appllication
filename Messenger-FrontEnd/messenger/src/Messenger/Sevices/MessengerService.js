@@ -210,6 +210,15 @@ class MessengerService {
         }
         );
     }
+    getMessagesUUID(data){
+        return  axios.post('http://127.0.0.1:8000/api/message/getMessageUUID/',
+        data,
+        this.headersList
+        ).then((response)=>{
+            return response.data;
+            
+        });
+    }
 
     getLoginToken(username=null, password=null, callBack = null){
         if (username == null || password == null){

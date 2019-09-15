@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { observer,inject } from "mobx-react"
 import PendingUser from "./PendingUser"
 import SpinnerComponet from "../LoadingSpinner/SpinnerComponet";
+import InfoComponet from "../InfoComponet/InfoComponet";
 //Manages A List Of Pending Users Instances
 class PendingUsers extends Component{
   constructor(props){
@@ -15,9 +16,7 @@ class PendingUsers extends Component{
     if (!loading){
       if (!pendingUsers){
           return (
-            <div className="pendingUsers">
-                YOu Have Pending Contact
-            </div>
+            <InfoComponet>No Pending Users</InfoComponet>
            );
       }
       return (

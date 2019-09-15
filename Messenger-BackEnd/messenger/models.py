@@ -3,6 +3,7 @@ from django.db.models import TextField
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models as models
+from User.models import contactList
 
 
 class Messages(models.Model):
@@ -52,6 +53,12 @@ class DirectConversationRecords(models.Model):
     user_two = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name="user_two_direct", db_column='user_two_id')
     conversation_id = models.AutoField(primary_key=True, db_column='conversation_id')
     last_spoken_to = models.DateTimeField(auto_now=True, editable=False, db_column='last_spoken_to')
+    contact = models.OneToOneField(
+        "User.contactList",
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="contact_conversation"
+    )
 
     class Meta:
         db_table = "DirectConversationRecords"

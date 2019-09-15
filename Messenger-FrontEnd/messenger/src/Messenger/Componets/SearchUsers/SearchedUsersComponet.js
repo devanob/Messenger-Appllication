@@ -5,6 +5,7 @@ import SearchedUser from "./SearchedUser";
 //Manages A List Of Pending Users Instances
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown} from '@fortawesome/free-solid-svg-icons'
+import InfoComponet from '../InfoComponet/InfoComponet';
 class SearchedUsers extends Component{
   
   constructor(props){
@@ -50,7 +51,7 @@ class SearchedUsers extends Component{
       if (!searchUsers){
           return (
             <div className="searchUsers">
-                No Results....Search For Using Above 
+                <InfoComponet className="no-search-user">Search Users Using The Search Bar</InfoComponet>
             </div>
            );
       }

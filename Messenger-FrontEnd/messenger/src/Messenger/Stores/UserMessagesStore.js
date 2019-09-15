@@ -2,7 +2,7 @@ import MessagesModel from "../Models/MessagesModel"
 import { observable, computed,
         action, decorate, 
         configure, reaction, when} from "mobx";
-
+const truncate = (input) => input.length > 5 ? `${input.substring(0, 5)}...` : input;
 configure({ enforceActions: 'observed' })
 //IMPORTS
 //Model The Users Contacts And Potential Contacts
@@ -30,7 +30,8 @@ class UserMessageStore{
             // reaction to ActiveUSer
             reaction ( 
                 ()=>{
-                    return this.store.userStore.currentActiveUser;
+                    //console.log(this.store.userStore.getContactUser);
+                    return this.store.userStore.getContactUser;
                 }, 
                 user=>{
                     this.setMessageText("");
@@ -55,7 +56,9 @@ class UserMessageStore{
                 ()=>{
                     this.setContactUsers(this.userStore.listActiveContacts).then(status=>{
                         if (status === true){
-                            this.loadMessages();
+                            this.loadMessagesUUID().catch(error=>{
+                                console.log(error);
+                            });
                         }
                         else{
                             return;
@@ -91,10 +94,12 @@ class UserMessageStore{
         if (this.contructedMessage.toUser === null){
             return;
         }
-        if (this.contructedMessage.toUser.uuid === this.store.userStore.currentActiveUser.uuid 
+        if (this.contructedMessage.toUser.uuid === this.store.userStore.getContactUser.uuid 
             & this.contructedMessageInternelMessage.trim().length > 0 ){
-            let messageJson = this.constructMessageToSend() 
-            console.log(messageJson);
+            let messageJson = this.constructMessageToSend();
+            if ("contact_id" in this.contructedMessage.toUser.getExtraMeta){
+                messageJson["contact_id"] = this.contructedMessage.toUser.getExtraMeta["contact_id"];
+            }
             this.transporLayer.sendMessageWebSocket(messageJson).then(status=>{
                 this.setMessageText("");
             }).catch(error=>{
@@ -115,6 +120,9 @@ class UserMessageStore{
             message : this.contructedMessage.message.trim()
         }
         return messageAsJson;
+    }
+    getMessageModel(uuid){
+        return this.userMesagesModels[uuid];
     }
     get contructedMessageInternelMessage(){
         return this.contructedMessage.message;
@@ -179,6 +187,20 @@ class UserMessageStore{
         if (this.userMesagesModels != null ){
             
             return this.transporLayer.getMessages().then(mssgsJson=>{
+                for (let key in this.userMesagesModels){
+                    this.userMesagesModels[key].bulkAddMessages(mssgsJson);
+                }
+               
+            })
+        }
+    }
+    async loadMessagesUUID(){
+        if (this.userMesagesModels != null ){
+            let list_uuid = []
+            for (let key_uuid in this.userMesagesModels){
+                list_uuid.push(key_uuid);
+            }
+            return this.transporLayer.getMessagesUUID({"list_uuid":list_uuid}).then(mssgsJson=>{
                 for (let key in this.userMesagesModels){
                     this.userMesagesModels[key].bulkAddMessages(mssgsJson);
                 }
