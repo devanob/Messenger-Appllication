@@ -42,7 +42,7 @@ class AuthenticationUser(viewsets.ViewSet):
             login(request,user)
             if created:
                 token.save()
-            return Response({"token": token.key, "username": user.username}, status=status.HTTP_201_CREATED)
+            return Response({"token": token.key, "user": UserSerializer(user).data}, status=status.HTTP_201_CREATED)
         else:
             return Response(form.errors, status=status.HTTP_404_NOT_FOUND)
 
@@ -68,7 +68,6 @@ class UserInfoViewSet(viewsets.ViewSet,StandardResultsSetPagination):
     def list(self,request):
         search = self.request.query_params.get('search', None)
         your_contacts = request.user.get_active_contacts()
-        print(your_contacts.query)
         queryset = None
         if search:
             queryset = self.USER_MODEL.objects \

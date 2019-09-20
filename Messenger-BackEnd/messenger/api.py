@@ -16,6 +16,7 @@ from User.models import contactList
 from django.contrib.auth import get_user_model
 from .customException import LengthToLarge
 from uuid import UUID
+from collections import OrderedDict
 
 class UserMessages(viewsets.ViewSet):
     item_per_group = 20
@@ -82,8 +83,19 @@ class UserMessages(viewsets.ViewSet):
 
         
  
-
-class UserActiveContact(viewsets.ViewSet):
+from rest_framework.pagination import PageNumberPagination
+#Pagination Class 
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 10
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('results', data)
+        ]))
+class UserActiveContact(viewsets.ViewSet,StandardResultsSetPagination ):
     item_per_group = 10
     "Retrieve Messages API User Authentication Required"
     authentication_classes = [TokenAuthentication, SessionAuthentication]
@@ -95,9 +107,9 @@ class UserActiveContact(viewsets.ViewSet):
         contacts = contactList.objects.select_related('friend_ship_initiator').\
             select_related('friend').select_related('contact_conversation').filter(query_conditon)\
                 .order_by("-contact_conversation__last_spoken_to")
-        print(contacts.query)
-        serializeContact = ContactsBasicSerializers(contacts, many=True)
-        return Response({"contacts":serializeContact.data,"current_user": user.uuid})
+        queryset_paginated= self.paginate_queryset(contacts,request)
+        serializeContact = ContactsBasicSerializers(queryset_paginated, many=True)
+        return self.get_paginated_response(serializeContact.data)
     def retrieve(self, request, pk):
         pass
 

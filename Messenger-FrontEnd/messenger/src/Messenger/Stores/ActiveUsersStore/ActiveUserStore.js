@@ -123,7 +123,7 @@ export default class ActiveUserStore {
                     this.setLoadingActive(false);
                     return;
                 }
-                usersContactList.forEach(user => {
+                usersContactList.contacts.forEach(user => {
                     this.setUser(user,true);
                 });
                 this.setLoadingActive(false);

@@ -15,7 +15,7 @@ class MessengerService {
     isLoggin = false;
     authToken = null;
     eventListener = {};
-    base_url = ""
+    current_auth_user ="";
     constructor(){
         this.headersList = {
             headers:{"Content-Type": 'application/json'},
@@ -34,6 +34,7 @@ class MessengerService {
         )
         this.checkUserLoggedIn().then(user=>{
             if (user != null){
+                this.current_auth_user = user;
                 this.setLoggedIn(true);
             }
             else {
@@ -147,7 +148,7 @@ class MessengerService {
             this.setConnectedWebSocketFlag(false);
         });
         this.reconnectingWebSocket.addEventListener('message', this.eventReceiverHandlier )
-            
+        
           
         
     }
@@ -167,16 +168,14 @@ class MessengerService {
         return axios.get('http://127.0.0.1:8000/api/active-contacts/',
         this.headersList
         ).then((response)=>{
-                let activeUser = response.data.current_user;
-                
-                let contacts = response.data.contacts.map(contact=>{
+                let activeUser = this.current_auth_user.uuid;
+                let contacts = response.data.results.map(contact=>{
                     //filter out the current user instances 
                     let contactJson = contact.friend.uuid === activeUser ? contact.friend_ship_initiator : contact.friend;
                     contactJson["contact_id"] = contact.id;
                     return contactJson;
                 })
-                console.log(contacts);
-                return contacts;
+                return {"contacts":contacts,"next":response.data.next};
             }
         )
       
@@ -240,9 +239,11 @@ class MessengerService {
             this.headersList.headers["Authorization"] = `Token ${userLoginInfo.token}`;
             this.tokenHeaderReady = true;
             this.authToken = userLoginInfo.token;
-            this.setLoggedIn(true)
+            this.current_auth_user = userLoginInfo.user;
+            console.log(this.current_auth_user);
+            this.setLoggedIn(true);
             return this.headersList.headers["Authorization"];
-            
+        
         });
         
     }

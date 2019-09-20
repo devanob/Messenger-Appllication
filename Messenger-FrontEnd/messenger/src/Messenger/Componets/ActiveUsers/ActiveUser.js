@@ -11,15 +11,15 @@ class ActiveUser extends Component {
     setActive = () => {
         this.props.user.setUserActive();
     }
-    truncate = (string) => {
-        console.log(string)
-        return string.length > 5 ? `${string.substring(0, 5)}...` : string
-    };
+   
     render() {
         const {user = null, messageModel=null } = this.props;
         let message = "";
         if (messageModel != null){
             message=messageModel.getMessageModel(user.uuid).getLastMessage.message;
+            if (message != null){
+                message=message;
+            }
         }
 
         return ( 
@@ -30,8 +30,10 @@ class ActiveUser extends Component {
                     </div > 
                     <div className = "contact-info" >
                         <div className="name"> { user.username } </div> 
-                        <div className="online-status">.</div> 
-                        <div className="last-message">{message}</div>
+                        <div className="online-status"><div className="indicator"> </div></div> 
+                        <div className="last-message">
+                            <div className="inner-last-message">{message}</div>
+                        </div>
                     </div >
                    
                 </a> 

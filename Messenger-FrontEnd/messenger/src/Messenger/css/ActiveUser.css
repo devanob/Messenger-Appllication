@@ -2,8 +2,7 @@
 --------------------------------*/
 .activeUsers{
     height: 75%;
-    width: 100;
-    /* background-color: palegreen; */
+    width: 100%;
     overflow: auto;
   }
   
@@ -20,7 +19,6 @@
     border-style: solid;
     overflow: visible;
     width: 100%;
-
     
   }
   
@@ -35,10 +33,7 @@
     border-top-left-radius: 0.1em;
     border-width: 5px 0 0;
     text-decoration: none;
-    height: auto;
-  
-  
-   
+    height: auto; 
   }
   
   .activeUsers .users li > a:hover{
@@ -64,21 +59,12 @@
     padding-top:0.2em;
     padding-bottom:0.2em;
     width: 75%;
-    /* align-content: center;
-    justify-content: center; */
-   
-    
-
-  
   }
   
   .activeUsers  .users .contact-info .name  {
     margin: 0;
     display: flex;
     align-items: center;
-    /* overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-word; */
     font-size: 1.1em;
     font-weight: 600;
     color:white;
@@ -90,6 +76,7 @@
     
 
   }
+
   .activeUsers  .users .contact-info .online-status  {
     margin: 0;
     display: flex;
@@ -99,17 +86,25 @@
     word-break: break-word;
     font-size: 1.1em;
     font-weight: 600;
-    width: 10%;
+    width: 20%;
     padding-top: 0.3em;
     padding-bottom: 0.3em;
-    /* white-space: nowrap; */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    
+    justify-content: center;
+
+
+  }
+
+  .activeUsers  .users .contact-info .online-status .indicator{
+    width: 25%;
+    height: 25%;
+    content: "";
+    background-image: linear-gradient(to bottom, #06ffb2, #3ffcb7, #59f9bb, #6df5bf, #7ef2c3);
+    border-radius: 50%;
+
 
   }
   .activeUsers  .users .contact-info .last-message  {
-    display: flex;
+
     margin: 0;
     align-items: center;
     overflow-wrap: break-word;
@@ -118,17 +113,20 @@
     color:white;
     padding-top: 0.3em;
     padding-bottom: 0.3em;
-    /* white-space: nowrap;
+    position: relative;
+    
+  }
+  .activeUsers  .users .contact-info .last-message .inner-last-message{
+
+    position: absolute;
+    top:0;
+    width: 100%;
+    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; */
-    
-    
-    
+    text-overflow: ellipsis;
+    margin-left: 0.5em;
 
     
-    
-
-
   }
   
   .profile-img img {
@@ -164,9 +162,6 @@
     flex-grow: 1;
   }
   
-  .active-user-status div {
-    flex-grow: 1;
-  }
   
 .active-user-status button {
       
