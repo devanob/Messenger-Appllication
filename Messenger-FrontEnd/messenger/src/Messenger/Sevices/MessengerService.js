@@ -184,16 +184,13 @@ class MessengerService {
         return axios.get('http://127.0.0.1:8000/api/pending-contacts/',
         this.headersList
         ).then((response)=>{
-                let activeUser = response.data.current_user;
-                
-                let contacts = response.data.contacts.map(contact=>{
+                let activeUser = this.current_auth_user.uuid;
+                let contacts = response.data.results.map(contact=>{
                     //filter out the current user instances 
                     let contactJson = contact.friend.uuid === activeUser ? contact.friend_ship_initiator : contact.friend;
                     contactJson["contact_id"] = contact.id;
                     return contactJson;
                 })
-
-                console.log(contacts);
                 return contacts;
             }
         )

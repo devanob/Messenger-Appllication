@@ -17,11 +17,15 @@ export default class ActiveUserStore {
     transporLayer = null;
     //collection of child store
     childStores ={};
-    constructor(store=null,transporLayer=null,uiStore=null){
+    constructor(store=null,transporLayer=null,uiStore=null, mainStore=null){
         this.store = store;
         this.transporLayer = transporLayer;
         if (this.store != null){
             this.store.registerChild("activeUsersStore", this);
+        }
+        
+        if (mainStore  != null){
+            mainStore.registerChild("activeUsersStore", this);
         }
         when(
             ()=>{

@@ -6,30 +6,36 @@ import PendingUserStore from './PendingUsersStore/PendingUsersStore';
 
 configure({ enforceActions: 'observed' })
 //IMPORTS
-//Model The Users Contacts And Potential Contacts
+//Store To Manage Active Contacts Of The Current Authenticated User. 
 export default class UserStore {
     /**
      *
      * @param {*} storeOwner-Store Owner-Owned By This Store Instance
      */
     currentActiveUser=  null;// {usename:null, uuid:null};
-    activeContacts = []
-    pendingContacts = []
-    isLoadingActiveContactsFlag= true//observable.box(true);
-    isLoadingPendingContactsFlag= true //observable.box(true);
-    loadingActiveError= false;
-    loadingPendingError= false;
     transporLayer = null;
     searchStore  = null;
     //collection of child store
     childStores ={};
-    constructor(store=null,transporLayer=null,uiStore=null){
+    constructor(store=null,transporLayer=null,uiStore=null, mainStore=null){
         this.store = store;
         this.transporLayer = transporLayer;
-        this.searchStore = new SearchUserStore(this,this.transporLayer,uiStore);
-        this.activeUserStore = new ActiveUserStore(this,this.transporLayer,uiStore);
-        this.pendingUserStore = new PendingUserStore(this,this.transporLayer,uiStore);
+        this.searchStore = new SearchUserStore(this,this.transporLayer,uiStore,mainStore);
+        this.activeUserStore = new ActiveUserStore(this,this.transporLayer,uiStore, mainStore);
+        this.pendingUserStore = new PendingUserStore(this,this.transporLayer,uiStore,mainStore);
+        if (this.store  != null){
+            this.store.registerChild("userStore", this);
+        }
+        if (mainStore  != null){
+            mainStore.registerChild("userStore", this);
+        }
         
+    }
+    registerChild(name, instance){
+        this.childStores[name]= instance;
+    }
+    getChildStore(name){
+        return this.childStores[name];
     }
     //Load contacts active and pending from the server using the transport layer
     loadData(){

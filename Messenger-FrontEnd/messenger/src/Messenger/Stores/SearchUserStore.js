@@ -17,7 +17,8 @@ export default class SearchUserStore{
     transporLayer = null; //messenger service layer
     loadingUsers= false; //flag represents if the users are being currenlty loaded
     loadUserError=false; //check if the users where loaded 
-    constructor(store=null,transporLayer=null, uiStore= null){
+    childStores ={};
+    constructor(store=null,transporLayer=null, uiStore= null, mainStore=null){
         this.store = store;
         this.transporLayer = transporLayer;
         this.uiStore = uiStore;
@@ -25,7 +26,16 @@ export default class SearchUserStore{
         if (this.store != null){
             this.store.registerChild("searchUsersStore", this);
         }
+        if (mainStore != null){
+            mainStore.registerChild("searchUsersStore", this);
+        }
         
+    }
+    registerChild(name, instance){
+        this.childStores[name]= instance;
+    }
+    getChildStore(name){
+        return this.childStores[name];
     }
     //user loaded from search 
     get getloadingUser() {

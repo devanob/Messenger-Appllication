@@ -13,6 +13,8 @@ export default class RootStore {
     transportLayer = null;
     userStore = null;
     uiSideBarStore = null;
+    //All child and sub -tore stores. 
+    allStores = {};
     /**
      * 
      * @param {*} store - tries to log in the user if a user name and passord is given (to be scrapped)
@@ -20,14 +22,26 @@ export default class RootStore {
      */
     constructor(store=null, userNamePassword=null){
         this.transportLayer = new MessengerService();
-        this.uiUserStore = new UIUserStore(this);
-        this.userStore = new UserStore(this,this.transportLayer, this.uiUserStore );
-        this.userMessageStore = new UserMessageStore(this,this.transportLayer,this.userStore);
-        this.logInStore = new LogInStore(this,this.transportLayer,this.uiSideBarStore);
+        this.uiUserStore = new UIUserStore(this, this);
+        this.userStore = new UserStore(this,this.transportLayer, this.uiUserStore, this );
+        this.userMessageStore = new UserMessageStore(this,this.transportLayer,this.userStore, this );
+        this.logInStore = new LogInStore(this,this.transportLayer,this.uiSideBarStore, this);
+        console.log(this.allStores);
         this.startAsyncServices().then((num)=>{
         }).catch(error=>{
             console.log(error);
         })
+    }
+    /**
+     * 
+     * @param {*} name - class json name
+     * @param {*} instance  - class instance 
+     */
+    registerChild(name, instance){
+        this.allStores[name] = instance;
+    }
+    getStore(name){
+        return this.allStores[name];
     }
     //Start Async Services That are need as soon a 
     async startAsyncServices(){
@@ -37,4 +51,5 @@ export default class RootStore {
         //await this.userMessageStore.loadMessages();
         return true;
     }
+    
 }

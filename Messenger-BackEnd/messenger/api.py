@@ -113,7 +113,7 @@ class UserActiveContact(viewsets.ViewSet,StandardResultsSetPagination ):
     def retrieve(self, request, pk):
         pass
 
-class UserPendingContact(viewsets.ViewSet):
+class UserPendingContact(viewsets.ViewSet,StandardResultsSetPagination):
     item_per_group = 50 
     "Retrieve Messages API User Authentication Required"
     authentication_classes = [TokenAuthentication, SessionAuthentication]
@@ -124,11 +124,9 @@ class UserPendingContact(viewsets.ViewSet):
         query_conditon= (Q(friend=user)) & Q(active_contact=False)
         contacts = contactList.objects.select_related('friend_ship_initiator').\
             select_related('friend').filter(query_conditon)
-        serializeContact = ContactsBasicSerializers(contacts, many=True)
-        serializeContact.data
-       
-
-        return Response({"contacts":serializeContact.data,"current_user": user.uuid})
+        queryset_paginated= self.paginate_queryset(contacts,request)
+        serializeContact = ContactsBasicSerializers(queryset_paginated, many=True)
+        return self.get_paginated_response(serializeContact.data) 
     def retrieve(self, request, pk):
         pass
     #create  A Pending Contact 

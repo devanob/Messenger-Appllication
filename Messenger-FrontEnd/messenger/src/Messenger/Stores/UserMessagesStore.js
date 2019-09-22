@@ -20,14 +20,21 @@ class UserMessageStore{
     userStore=null
     //This is the message with user that will be sent over websocket
     contructedMessage = {toUser: null , message : ""};
-    constructor(store=null,transporLayer=null, userStore=null){
+    constructor(store=null,transporLayer=null, userStore=null, mainStore=null){
         this.store = store;
         this.transporLayer = transporLayer;
         this.userStore = userStore;
         if (this.store != null){
+            if (this.store  != null){
+                this.store.registerChild("messagesStore", this);
+            }
+            if (mainStore  != null){
+                mainStore.registerChild("messagesStore", this);
+            }
             //react to active user changes 
             //reset message content
-            // reaction to ActiveUSer
+            // reaction to 
+        
             reaction ( 
                 ()=>{
                     //console.log(this.store.userStore.getContactUser);
@@ -73,6 +80,14 @@ class UserMessageStore{
         }
         
     }
+    registerChild(name, instance){
+        this.childStores[name]= instance;
+    }
+    getChildStore(name){
+        return this.childStores[name];
+    }
+
+      
     receiveMessage = (event)=>{
 
         let to_UserModel = this.userMesagesModels[event.to_User];

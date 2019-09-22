@@ -30,14 +30,27 @@ class UIUserStore {
     ]
     activeElement= "ACTIVECONTACTS";
     isActive = true;
+    childStores ={};
     store = null
     /**
      *
      * @param {*} store -The Root Store Of The UI-also allow certain depeencies to be injected
      */
     searchString = "";
-    constructor(store=null){
+    constructor(store=null, mainStore=null){
         this.store = store;
+        if (this.store  != null){
+            this.store.registerChild("uiStore", this);
+        }
+        if (mainStore  != null){
+            mainStore.registerChild("uiStore", this);
+        }
+    }
+    registerChild(name, instance){
+        this.childStores[name]= instance;
+    }
+    getChildStore(name){
+        return this.childStores[name];
     }
     get getActiveElement(){
         return this.activeElement;

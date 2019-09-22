@@ -16,7 +16,7 @@ export default class PendingUserStore {
     transporLayer = null;
     //collection of child store
     childStores ={};
-    constructor(store=null,transporLayer=null,uiStore=null){
+    constructor(store=null,transporLayer=null,uiStore=null, mainStore=null){
         this.store = store;
         this.transporLayer = transporLayer;
         this.uiStore = uiStore;
@@ -39,6 +39,9 @@ export default class PendingUserStore {
             })
             if (this.store != null){
                 this.store.registerChild("pendingUsersStore", this);
+            }
+            if (mainStore  != null){
+                mainStore.registerChild("pendingUsersStore", this);
             }
     }
     //Load contacts active and pending from the server using the transport layer

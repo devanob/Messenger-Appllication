@@ -10,12 +10,26 @@ export default class LogInStore{
      * @param {*} transporLayer  - the messenger service transporLayer
      * @param {*} uiStore- uid store layer 
      */
-    constructor(store=null,transporLayer=null, uiStore= null){
+    childStores={};
+    constructor(store=null,transporLayer=null, uiStore= null, mainStore=null){
         this.store = store;
         this.transporLayer = transporLayer;
         this.uiStore = uiStore;
         //check if the user is already loggin i.e session authenication
+        if (mainStore != null){
+            mainStore.registerChild("loginStore", this);
+        }
+        if (this.store != null){
+           this.store.registerChild("loginStore", this);
+        }
         
+        
+    }
+    registerChild(name, instance){
+        this.childStores[name]= instance;
+    }
+    getChildStore(name){
+        return this.childStores[name];
     }
     //handles loggin in the user from the transport layer side of things 
     logInUser(username=null, password=null){
