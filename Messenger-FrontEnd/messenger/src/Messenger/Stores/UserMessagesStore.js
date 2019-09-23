@@ -137,7 +137,21 @@ class UserMessageStore{
         return messageAsJson;
     }
     getMessageModel(uuid){
-        return this.userMesagesModels[uuid];
+        if (uuid in this.userMesagesModels){
+            return this.userMesagesModels[uuid];
+        }
+        else {
+            return null;
+        }
+    }
+    getLastMessage(uuid){
+        if (uuid in this.userMesagesModels){
+            //console.log(this.userMesagesModels[uuid].getLastMessage);
+            return this.userMesagesModels[uuid].getLastMessage.message;
+        }
+        else {
+            return ""
+        }
     }
     get contructedMessageInternelMessage(){
         return this.contructedMessage.message;
@@ -151,7 +165,6 @@ class UserMessageStore{
                 return this.userMesagesModels[activerUser.uuid];
             }
             else {
-                this.setContactSingle(activerUser)
                 return this.userMesagesModels[activerUser.uuid];
             }
         }
@@ -255,7 +268,8 @@ decorate(UserMessageStore, {
     setMessageUser: action,
     sendMessage : action,
     getMessagesActiveUser: computed,
-    setContactSingle: action
+    setContactSingle: action, 
+    // getLastMessage: computed
 
 })
 

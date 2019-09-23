@@ -4,13 +4,18 @@ import ActiveUser from "./ActiveUser"
 import Spinner from 'react-bootstrap/Spinner';
 import SpinnerComponet from "../LoadingSpinner/SpinnerComponet"
 import RootStore from '../../Stores/rootStore';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronDown} from '@fortawesome/free-solid-svg-icons'
 
 //Manages UI Active Users Displayed To The User
 class ActiveUsers extends Component{
   constructor(props){
     super(props)
   }   
-
+  loadNextUserSet=()=>{
+    let activeUserStore= this.props.rootStore.getStore("activeUsersStore");
+    activeUserStore.loadNextUserSet();
+  }
   render() {
     const {rootStore,searchText} = this.props;
     const activeUsers = rootStore.userStore.listActiveContacts;
@@ -45,6 +50,13 @@ class ActiveUsers extends Component{
                    
                   );
               })}
+              <li className="loadContact" onClick={this.loadNextUserSet}>
+                <div className="loading-contacts-container">
+                  <div className="load-more-contacts" >
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </div>
+                </div>
+              </li>
           </ul>
       </div>
       );

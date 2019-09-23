@@ -26,7 +26,6 @@ export default class RootStore {
         this.userStore = new UserStore(this,this.transportLayer, this.uiUserStore, this );
         this.userMessageStore = new UserMessageStore(this,this.transportLayer,this.userStore, this );
         this.logInStore = new LogInStore(this,this.transportLayer,this.uiSideBarStore, this);
-        console.log(this.allStores);
         this.startAsyncServices().then((num)=>{
         }).catch(error=>{
             console.log(error);
@@ -41,7 +40,12 @@ export default class RootStore {
         this.allStores[name] = instance;
     }
     getStore(name){
-        return this.allStores[name];
+        if (name in this.allStores){
+            return this.allStores[name];
+        }
+        else {
+            return null;
+        }
     }
     //Start Async Services That are need as soon a 
     async startAsyncServices(){

@@ -16,7 +16,7 @@ class ActiveUser extends Component {
         const {user = null, messageModel=null } = this.props;
         let message = "";
         if (messageModel != null){
-            message=messageModel.getMessageModel(user.uuid).getLastMessage.message;
+            message=messageModel.getLastMessage(user.uuid);
             if (message != null){
                 message=message;
             }

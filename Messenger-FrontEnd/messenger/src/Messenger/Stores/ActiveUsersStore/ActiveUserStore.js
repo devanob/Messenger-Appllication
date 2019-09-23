@@ -15,6 +15,7 @@ export default class ActiveUserStore {
     isLoadingPendingContactsFlag= true //observable.box(true);
     loadingActiveError= false;
     transporLayer = null;
+    nextUserSet=null;
     //collection of child store
     childStores ={};
     constructor(store=null,transporLayer=null,uiStore=null, mainStore=null){
@@ -27,6 +28,7 @@ export default class ActiveUserStore {
         if (mainStore  != null){
             mainStore.registerChild("activeUsersStore", this);
         }
+
         when(
             ()=>{
                 
@@ -130,10 +132,51 @@ export default class ActiveUserStore {
                 usersContactList.contacts.forEach(user => {
                     this.setUser(user,true);
                 });
+                this.nextUserSet = usersContactList.next;
                 this.setLoadingActive(false);
+
                 return;
             }
         );
+    }
+    loadNextUserSet(){
+        if (this.nextUserSet == null){
+            return 
+        }
+        else {
+            this.transporLayer.getNextUsersSet(this.nextUserSet).then(reponse=>{
+                return this.processUsers(reponse);
+            }).then(contactsData=>{
+                //create user models 
+                let mappedModel = contactsData.contacts.filter(userJson=>{
+                    let found =this.activeContacts.find(userModel=>{
+                        return userModel.uuid === userJson.uuid;
+                    })
+                    return (found == null || typeof found  == "undefined")
+                }).map(userJson=>{
+                    return new UserModel(this,userJson,true);
+                });
+                let newList = [...this.activeContacts, ...mappedModel]; 
+                this.setActiveUsers(newList);
+            })
+        }
+    }
+    /**
+     * Sets Active User List 
+     */
+    setActiveUsers(listData){
+        this.activeContacts = listData;
+        
+    }
+    processUsers(results){
+        let activeUser = this.transporLayer.current_auth_user.uuid;
+                let contacts = results.results.map(contact=>{
+                    //filter out the current user instances 
+                    let contactJson = contact.friend.uuid === activeUser ? contact.friend_ship_initiator : contact.friend;
+                    contactJson["contact_id"] = contact.id;
+                    return contactJson;
+                });
+                return {"contacts":contacts,"next":results.next};
     }
 
     setActiveContact(idUsername){
@@ -142,17 +185,13 @@ export default class ActiveUserStore {
             return false; 
         }
         else {
-            //console.log(idUsername);
             let user = this.activeContacts.find((user)=>{
                 return user.uuid === idUsername.uuid || user.username === idUsername.username;
             });
-            //console.log("Found User" + user);
-            //console.log(user.asJson());
             if (user === null){
                 return false;
             }
             else {
-                //console.log("Came here somehow");
                 this.currentActiveUser = user;
                 this.generateActiveUserList()
                 return true;
@@ -211,5 +250,7 @@ decorate(ActiveUserStore, {
     getLoadingActiveError : computed,
     getIsLoadingActive: computed,
     getContactUser:computed,
-    addFriendModel  : action 
+    addFriendModel  : action,
+    nextUserSet: observable,
+    setActiveUsers: action
 })
