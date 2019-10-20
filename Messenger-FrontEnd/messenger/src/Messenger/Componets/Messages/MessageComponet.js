@@ -21,7 +21,7 @@ class MessageComponet extends Component{
         let uuidUser = activeUser.uuid;
         let userModelMessages = messages;
         if (userModelMessages === null){
-            objectToRender = <div> Still Loading MEssages </div>
+            objectToRender = <InfoComponet className="no-active-user">Loading Messages</InfoComponet>
         }
         else {
             objectToRender = <MessageListComponet 

@@ -48,7 +48,7 @@ class MessengerService {
      */
     addEventListenerHandlier(eventType = null, functionHandlier =null){
 
-        if (eventType === null | functionHandlier === null | !eventType instanceof String){
+        if (eventType === null | functionHandlier === null ){
         // it's a string){
             console.log("Cannot Add Empty Event Or Handliers or null or not string");
         }
@@ -65,6 +65,7 @@ class MessengerService {
 
 
         }
+        //console.log(this.eventListener);
         
         
     }

@@ -49,11 +49,77 @@ class UserMessageStore{
             if (this.transporLayer!== null){
                 this.transporLayer.addEventListenerHandlier(
                     "message",this.receiveMessage
-                    )
+                    );
             }
         }
+        this.intialUserLoadMEssages(mainStore);
+        this.changeInActiveUserHandlier();
         ///if we got a valid userstore
-        // getLoadingActiveError : computed,
+        // getLo.inadingActiveError : computed,
+        
+        
+    }
+    changeInUserListHandlier(){
+        if (this.userStore != null ){
+            reaction(
+                ()=>{
+                    return this.userStore.listActiveContacts
+                }, 
+                (listUsers)=>{
+                    if (Object.keys(this.userMesagesModels).length === listUsers.length){
+                        return;
+                    }
+                    //contruct the difference between the two jsons objects
+                    let filteredUsers = listUsers.filter((user)=>{
+                        return !(user.uuid in this.userMesagesModels)
+                        
+                    }).map((user)=>{
+                        let userJson = {};
+                        userJson[user.uuid] = new MessagesModel(this,user);
+                        return userJson;
+                    });
+                    console.log(this.userMesagesModels);
+                    // console.log(filteredUsers);
+                    // console.log(this.userMesagesModels);
+                    filteredUsers = Object.assign({}, ...filteredUsers);
+                    let listUserMessage = [];
+                    for (let userKey in filteredUsers){
+                        listUserMessage.push(userKey)
+                    }
+                    this.userMesagesModels=Object.assign(this.userMesagesModels, filteredUsers);
+                    this.loadMessagesUUID(listUserMessage).then(status=>{
+                        console.log("success");
+                    }).catch(error=>{
+                        console.log(error);
+                    });
+                    
+
+
+                }
+            )
+        }
+    }
+    changeInActiveUserHandlier(mainStore){
+        if (this.store != null){
+           
+            //react to active user changes 
+            //reset message content
+            // reaction to 
+            
+            reaction ( 
+                ()=>{
+                    return this.store.userStore.getContactUser;
+                }, 
+                user=>{
+                    this.setMessageText("");
+                    this.setMessageUser(user);
+                    // console.log(this.contructedMessage)
+                }
+             )
+            
+        }
+    }
+    intialUserLoadMEssages(){
         if (this.userStore != null ){
             when(
                 ()=>{
@@ -63,7 +129,15 @@ class UserMessageStore{
                 ()=>{
                     this.setContactUsers(this.userStore.listActiveContacts).then(status=>{
                         if (status === true){
-                            this.loadMessagesUUID().catch(error=>{
+                            let list_uuid = []
+                            if (this.userMesagesModels != null ){
+                                for (let key_uuid in this.userMesagesModels){
+                                    list_uuid.push(key_uuid);
+                                }
+                            }
+                            this.loadMessagesUUID(list_uuid).then(status=>{
+                                this.changeInUserListHandlier();
+                            }).catch(error=>{
                                 console.log(error);
                             });
                         }
@@ -73,12 +147,11 @@ class UserMessageStore{
                         
                     }).catch(error=>{
                         console.log(error)
-                    })
+                    });
                 }
             
             )
         }
-        
     }
     registerChild(name, instance){
         this.childStores[name]= instance;
@@ -89,19 +162,20 @@ class UserMessageStore{
 
       
     receiveMessage = (event)=>{
-
         let to_UserModel = this.userMesagesModels[event.to_User];
-        let from_UserModel = this.userMesagesModels[event.from_User]
+        let from_UserModel = this.userMesagesModels[event.from_User];
+        console.log(to_UserModel);
+        console.log(from_UserModel);
         if (from_UserModel !== null & typeof from_UserModel !== "undefined"){
             from_UserModel.addMessage(event);
+            
         }
         if (to_UserModel !== null & typeof to_UserModel !== "undefined"){
             to_UserModel.addMessage(event);
+            
+            
         }
         
-        else {
-           
-        }
     }
     //sends the current message 
     sendMessage(){
@@ -165,7 +239,7 @@ class UserMessageStore{
                 return this.userMesagesModels[activerUser.uuid];
             }
             else {
-                return this.userMesagesModels[activerUser.uuid];
+                return null;
             }
         }
         else {
@@ -222,12 +296,12 @@ class UserMessageStore{
             })
         }
     }
-    async loadMessagesUUID(){
+    async loadMessagesUUID(list_uuid){
         if (this.userMesagesModels != null ){
-            let list_uuid = []
-            for (let key_uuid in this.userMesagesModels){
-                list_uuid.push(key_uuid);
-            }
+            // let list_uuid = []
+            // for (let key_uuid in this.userMesagesModels){
+            //     list_uuid.push(key_uuid);
+            // }
             return this.transporLayer.getMessagesUUID({"list_uuid":list_uuid}).then(mssgsJson=>{
                 for (let key in this.userMesagesModels){
                     this.userMesagesModels[key].bulkAddMessages(mssgsJson);
